@@ -1,0 +1,253 @@
+{
+ "note": "Session-measured tokens = drop in the session's remaining-token counter across each step (includes thinking + tool wrappers + code). Code tokens are counted separately with @anthropic-ai/tokenizer.",
+ "batches": [
+  {
+   "batch": 1,
+   "ids": "01-10",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Context + read canvas instructions (one-time)",
+     99948
+    ],
+    [
+     "Generate 01-05",
+     7025
+    ],
+    [
+     "Generate 06-10",
+     8203
+    ],
+    [
+     "Render / stats / visual check",
+     9027
+    ],
+    [
+     "Summaries + packaging + upload",
+     4346
+    ],
+    [
+     "Canvas layout",
+     6484
+    ]
+   ],
+   "generation": 15228
+  },
+  {
+   "batch": 2,
+   "ids": "11-20",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Turn start (new instructions)",
+     691
+    ],
+    [
+     "Generate 11-15",
+     9149
+    ],
+    [
+     "Generate 16-20",
+     9881
+    ],
+    [
+     "Render / visual check / fix #20 lid + add environment lighting",
+     5676
+    ],
+    [
+     "Summaries + reusable packaging script + upload 20 renders",
+     16778
+    ],
+    [
+     "Canvas layout (overview + batch boards)",
+     8169
+    ]
+   ],
+   "generation": 19030
+  },
+  {
+   "batch": 3,
+   "ids": "21-30",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Turn start (request for 30 objects)",
+     2358
+    ],
+    [
+     "Generate 21-25",
+     10268
+    ],
+    [
+     "Generate 26-30",
+     9875
+    ]
+   ],
+   "generation": 20143
+  },
+  {
+   "batch": 4,
+   "ids": "31-40",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 31-35",
+     11156
+    ],
+    [
+     "Generate 36-40",
+     11091
+    ]
+   ],
+   "generation": 22247
+  },
+  {
+   "batch": 5,
+   "ids": "41-50",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 41-45",
+     11504
+    ],
+    [
+     "Generate 46-50",
+     12506
+    ],
+    [
+     "Render 21-50 / visual check / fix #22 lid + #43 arm (all 3 batches)",
+     7787
+    ],
+    [
+     "Summaries + observations + upload 30 renders (all 3 batches)",
+     15369
+    ],
+    [
+     "Canvas + packaging (all 3 batches)",
+     7506
+    ]
+   ],
+   "generation": 24010
+  },
+  {
+   "batch": 6,
+   "ids": "51-60",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 51-55 (incl. turn start + planning 50 prompts)",
+     5651
+    ],
+    [
+     "Generate 56-60",
+     10956
+    ],
+    [
+     "Render / check 51-60 (+ partial-render option)",
+     1792
+    ]
+   ],
+   "generation": 16607
+  },
+  {
+   "batch": 7,
+   "ids": "61-70",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 61-65",
+     7068
+    ],
+    [
+     "Generate 66-70",
+     11021
+    ],
+    [
+     "Render / check 61-70",
+     986
+    ]
+   ],
+   "generation": 18089
+  },
+  {
+   "batch": 8,
+   "ids": "71-80",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 71-75",
+     5772
+    ],
+    [
+     "Generate 76-80",
+     10519
+    ],
+    [
+     "Render / check 71-80",
+     982
+    ]
+   ],
+   "generation": 16291
+  },
+  {
+   "batch": 9,
+   "ids": "81-90",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 81-85",
+     9232
+    ],
+    [
+     "Generate 86-90",
+     8724
+    ],
+    [
+     "Render / check 81-90",
+     985
+    ]
+   ],
+   "generation": 17956
+  },
+  {
+   "batch": 10,
+   "ids": "91-100",
+   "date": "2026-09-23",
+   "steps": [
+    [
+     "Generate 91-95",
+     9490
+    ],
+    [
+     "Generate 96-100",
+     9907
+    ],
+    [
+     "Render / check / fix #91 shell + eyes, numeric sort fix",
+     3287
+    ],
+    [
+     "Summaries + detail-level analysis + upload 50 renders (batches 6-10)",
+     21529
+    ],
+    [
+     "Canvas + packaging (batches 6-10)",
+     10974
+    ]
+   ],
+   "generation": 19397
+  }
+ ],
+ "groups": {
+  "51-55": 5651,
+  "56-60": 10956,
+  "61-65": 7068,
+  "66-70": 11021,
+  "71-75": 5772,
+  "76-80": 10519,
+  "81-85": 9232,
+  "86-90": 8724,
+  "91-95": 9490,
+  "96-100": 9907
+ }
+}

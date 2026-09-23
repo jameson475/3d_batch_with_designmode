@@ -1,0 +1,71 @@
+// Prompt 40: "A hurricane oil lantern with a red-painted fuel tank, a glass globe with a glowing flame, a wire guard, a vented cap, and a bail handle."
+export const meta = { id: '40', name: 'Hurricane Lantern', prompt: 'A hurricane oil lantern with a red-painted fuel tank, a glass globe with a glowing flame, a wire guard, a vented cap, and a bail handle.' };
+
+export function build(THREE) {
+  const root = new THREE.Group();
+  const red = new THREE.MeshStandardMaterial({ color: 0xb3261e, metalness: 0.5, roughness: 0.35 });
+  const wire = new THREE.MeshStandardMaterial({ color: 0x9a9ea3, metalness: 1, roughness: 0.3 });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0xfff4de, roughness: 0.05, transmission: 0.85, thickness: 0.05, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
+
+  // Fuel tank: squat lathe
+  const tp = [[0.001, 0], [0.5, 0], [0.55, 0.05], [0.56, 0.18], [0.45, 0.3], [0.2, 0.34], [0.001, 0.34]].map(([x, y]) => new THREE.Vector2(x, y));
+  root.add(new THREE.Mesh(new THREE.LatheGeometry(tp, 40), red));
+  const burner = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.12, 24), wire);
+  burner.position.y = 0.4;
+  root.add(burner);
+  const wickKnob = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 16), wire);
+  wickKnob.rotation.x = Math.PI / 2;
+  wickKnob.position.set(0, 0.4, 0.22);
+  root.add(wickKnob);
+
+  // Globe: bulged lathe (thin shell)
+  const gp = [];
+  for (let i = 0; i <= 20; i++) { const t = i / 20; gp.push(new THREE.Vector2(0.18 + 0.2 * Math.sin(Math.PI * t), 0.46 + t * 0.7)); }
+  root.add(new THREE.Mesh(new THREE.LatheGeometry(gp, 40), glass));
+
+  // Flame + light
+  const fp = [];
+  for (let i = 0; i <= 12; i++) { const t = i / 12; fp.push(new THREE.Vector2(0.06 * Math.sin(Math.PI * Math.pow(t, 0.6)) + 0.0005, t * 0.28)); }
+  const flame = new THREE.Mesh(new THREE.LatheGeometry(fp, 16), new THREE.MeshStandardMaterial({ color: 0xffd27a, emissive: 0xff9a1a, emissiveIntensity: 2.4 }));
+  flame.position.y = 0.5;
+  root.add(flame);
+  const light = new THREE.PointLight(0xffb454, 3, 4);
+  light.position.y = 0.7;
+  root.add(light);
+
+  // Wire guard: vertical bars following the globe + two rings
+  for (let k = 0; k < 6; k++) {
+    const a = (k / 6) * Math.PI * 2;
+    const pts = gp.filter((_, i) => i % 4 === 0).map(v => new THREE.Vector3(Math.cos(a) * (v.x + 0.05), v.y, Math.sin(a) * (v.x + 0.05)));
+    root.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 16, 0.01, 5), wire));
+  }
+  for (const [y, r] of [[0.81, 0.43], [0.62, 0.38], [1.0, 0.38]]) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.01, 5, 40), wire);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = y;
+    root.add(ring);
+  }
+  // Side air tubes (the "hurricane" frame) from tank to cap
+  for (const s of [-1, 1]) {
+    const tube = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(s * 0.5, 0.3, 0), new THREE.Vector3(s * 0.52, 0.8, 0), new THREE.Vector3(s * 0.45, 1.25, 0), new THREE.Vector3(s * 0.22, 1.32, 0),
+    ]);
+    root.add(new THREE.Mesh(new THREE.TubeGeometry(tube, 24, 0.035, 10), red));
+  }
+  // Vented cap + bail handle
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.25, 0.14, 32), red);
+  cap.position.y = 1.3;
+  root.add(cap);
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2;
+    const v = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, 0.005), new THREE.MeshBasicMaterial({ color: 0x220000 }));
+    v.position.set(Math.cos(a) * 0.2, 1.3, Math.sin(a) * 0.2);
+    v.rotation.y = -a;
+    root.add(v);
+  }
+  const bail = new THREE.Mesh(new THREE.TorusGeometry(0.45, 0.012, 6, 40, Math.PI), wire);
+  bail.position.y = 1.15;
+  bail.rotation.y = 0.3;
+  root.add(bail);
+  return root;
+}

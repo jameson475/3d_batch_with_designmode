@@ -1,0 +1,83 @@
+// Prompt 14: "An acoustic guitar with a figure-eight spruce body, a sound hole with rosette, a long fretted neck, a headstock with tuning pegs, and six strings."
+export const meta = { id: '14', name: 'Acoustic Guitar', prompt: 'An acoustic guitar with a figure-eight spruce body, a sound hole with rosette, a long fretted neck, a headstock with tuning pegs, and six strings.' };
+
+export function build(THREE) {
+  const root = new THREE.Group();
+  const spruce = new THREE.MeshStandardMaterial({ color: 0xe0b872, roughness: 0.45 });
+  const side = new THREE.MeshStandardMaterial({ color: 0x6e3b1f, roughness: 0.5 });
+  const neckMat = new THREE.MeshStandardMaterial({ color: 0x4a2a17, roughness: 0.6 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0xd9d9d9, metalness: 0.9, roughness: 0.25 });
+
+  // Figure-eight outline: two overlapping ellipses sampled as one closed curve
+  const body = new THREE.Shape();
+  const pts = [];
+  const N = 120;
+  for (let i = 0; i <= N; i++) {
+    const t = (i / N) * Math.PI * 2;
+    const y = Math.sin(t);
+    // width varies with height: lower bout wide, waist narrow, upper bout medium
+    const yy = y * 1.05;
+    const w = 0.78 * Math.exp(-Math.pow((yy + 0.45) / 0.55, 2)) + 0.6 * Math.exp(-Math.pow((yy - 0.55) / 0.42, 2)) + 0.12;
+    pts.push(new THREE.Vector2(Math.cos(t) * w, yy));
+  }
+  body.setFromPoints(pts);
+  const hole = new THREE.Path();
+  hole.absarc(0, 0.3, 0.2, 0, Math.PI * 2, true);
+  body.holes.push(hole);
+
+  const top = new THREE.Mesh(new THREE.ExtrudeGeometry(body, { depth: 0.02, bevelEnabled: false, curveSegments: 48 }), spruce);
+  top.position.z = 0.34;
+  root.add(top);
+  const sides = new THREE.Mesh(new THREE.ExtrudeGeometry(new THREE.Shape(pts), { depth: 0.34, bevelEnabled: false }), side);
+  root.add(sides);
+
+  // Rosette
+  const ros = new THREE.Mesh(new THREE.RingGeometry(0.22, 0.27, 48), neckMat);
+  ros.position.set(0, 0.3, 0.365);
+  root.add(ros);
+
+  // Bridge + saddle
+  const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.08, 0.04), neckMat);
+  bridge.position.set(0, -0.55, 0.38);
+  root.add(bridge);
+
+  // Neck + fretboard + frets
+  const neckLen = 2.0, neckY = 1.05 + neckLen / 2;
+  const neck = new THREE.Mesh(new THREE.BoxGeometry(0.2, neckLen, 0.12), neckMat);
+  neck.position.set(0, neckY, 0.28);
+  root.add(neck);
+  for (let f = 1; f <= 18; f++) {
+    const d = neckLen * (1 - Math.pow(2, -f / 12)) * 1.25; // equal-temperament spacing
+    if (d > neckLen - 0.05) break;
+    const fret = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.012, 0.015), metal);
+    fret.position.set(0, 1.05 + neckLen - d, 0.345);
+    root.add(fret);
+  }
+
+  // Headstock + tuning pegs
+  const headY = 1.05 + neckLen + 0.3;
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.6, 0.07), neckMat);
+  head.position.set(0, headY, 0.26);
+  head.rotation.x = -0.2;
+  root.add(head);
+  for (let i = 0; i < 6; i++) {
+    const sgn = i < 3 ? -1 : 1;
+    const peg = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.14, 8), metal);
+    peg.rotation.z = Math.PI / 2;
+    peg.position.set(sgn * 0.22, headY - 0.18 + (i % 3) * 0.17, 0.27);
+    root.add(peg);
+  }
+
+  // Strings: bridge -> nut
+  const strMat = new THREE.LineBasicMaterial({ color: 0xeeeeee });
+  for (let s = 0; s < 6; s++) {
+    const x = -0.075 + s * 0.03;
+    root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(x * 1.4, -0.55, 0.41), new THREE.Vector3(x, 1.05 + neckLen, 0.35),
+    ]), strMat));
+  }
+
+  root.rotation.z = -0.5;
+  root.position.y = 1.8;
+  return root;
+}

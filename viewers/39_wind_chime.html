@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Wind Chime</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>39 · Wind Chime</b><br>A hanging wind chime with a round wooden top disk, six aluminum tubes of graded lengths on strings, a central striker, and a sail.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 39: "A hanging wind chime with a round wooden top disk, six aluminum tubes of graded lengths on strings, a central striker, and a sail."
+const meta = { id: '39', name: 'Wind Chime', prompt: 'A hanging wind chime with a round wooden top disk, six aluminum tubes of graded lengths on strings, a central striker, and a sail.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0x8a5d34, roughness: 0.6 });
+  const alu = new THREE.MeshStandardMaterial({ color: 0xc9ced6, metalness: 1, roughness: 0.2 });
+  const cord = new THREE.LineBasicMaterial({ color: 0x3a3a3a });
+  const line = (a, b) => root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a, b]), cord));
+  const topY = 3.0;
+
+  // Hanging ring + suspension cords to the disk
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.012, 8, 24), alu);
+  ring.position.y = topY + 0.55;
+  root.add(ring);
+  for (let k = 0; k < 3; k++) {
+    const a = (k / 3) * Math.PI * 2;
+    line(new THREE.Vector3(0, topY + 0.47, 0), new THREE.Vector3(Math.cos(a) * 0.35, topY + 0.04, Math.sin(a) * 0.35));
+  }
+  const disk = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.06, 40), wood);
+  disk.position.y = topY;
+  root.add(disk);
+
+  // Six tubes on a circle, lengths from the pentatonic-ish series (length ∝ 1/sqrt(freq))
+  const ratios = [1, 9 / 8, 5 / 4, 3 / 2, 5 / 3, 2];
+  const base = 1.4, R = 0.3;
+  ratios.forEach((r, i) => {
+    const len = base / Math.sqrt(r);
+    const a = (i / 6) * Math.PI * 2 + 0.2;
+    const x = Math.cos(a) * R, z = Math.sin(a) * R;
+    const hang = 0.25 + (1 - len / base) * 0.3;
+    const yTop = topY - hang;
+    line(new THREE.Vector3(x, topY - 0.03, z), new THREE.Vector3(x, yTop, z));
+    const tube = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, len, 20, 1, true), alu);
+    tube.material.side = THREE.DoubleSide;
+    tube.position.set(x, yTop - len / 2, z);
+    tube.rotation.z = (i % 2 ? 1 : -1) * 0.02; // slight sway
+    root.add(tube);
+  });
+
+  // Central striker disk at mid-tube height, then the sail below
+  const strikerY = topY - 1.0;
+  line(new THREE.Vector3(0, topY - 0.03, 0), new THREE.Vector3(0, strikerY - 1.1, 0));
+  const striker = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.04, 32), wood);
+  striker.position.y = strikerY;
+  root.add(striker);
+  const sailShape = new THREE.Shape();
+  sailShape.moveTo(0, 0); sailShape.lineTo(0.18, -0.25); sailShape.lineTo(0, -0.6); sailShape.lineTo(-0.18, -0.25); sailShape.closePath();
+  const sail = new THREE.Mesh(new THREE.ExtrudeGeometry(sailShape, { depth: 0.015, bevelEnabled: false }), wood);
+  sail.position.set(0, strikerY - 1.1, -0.0075);
+  sail.rotation.y = 0.5;
+  root.add(sail);
+  root.position.y = -0.2;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

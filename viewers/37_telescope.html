@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Brass Telescope</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>37 · Brass Telescope</b><br>A brass refracting telescope on a wooden tripod with an altitude mount, a finder scope, an eyepiece, and a dew shield, pointed at the sky.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 37: "A brass refracting telescope on a wooden tripod with an altitude mount, a finder scope, an eyepiece, and a dew shield, pointed at the sky."
+const meta = { id: '37', name: 'Brass Telescope', prompt: 'A brass refracting telescope on a wooden tripod with an altitude mount, a finder scope, an eyepiece, and a dew shield, pointed at the sky.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc79a3e, metalness: 1, roughness: 0.25 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x7c4f2a, roughness: 0.6 });
+  const black = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.5, roughness: 0.4 });
+  const headY = 1.6;
+
+  // Tripod legs splayed at 120°, with a spreader tray
+  for (let k = 0; k < 3; k++) {
+    const a = (k / 3) * Math.PI * 2;
+    const foot = new THREE.Vector3(Math.cos(a) * 0.8, 0, Math.sin(a) * 0.8);
+    const top = new THREE.Vector3(Math.cos(a) * 0.1, headY - 0.05, Math.sin(a) * 0.1);
+    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, foot.distanceTo(top), 0.035), wood);
+    leg.position.copy(foot).lerp(top, 0.5);
+    leg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), top.clone().sub(foot).normalize());
+    root.add(leg);
+    const tip = new THREE.Mesh(new THREE.ConeGeometry(0.025, 0.08, 8), brass);
+    tip.position.copy(foot).setY(0.04);
+    tip.rotation.x = Math.PI;
+    root.add(tip);
+  }
+  const tray = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.02, 3), wood);
+  tray.position.y = 0.7;
+  root.add(tray);
+  const head = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.1, 24), brass);
+  head.position.y = headY;
+  root.add(head);
+
+  // Alt mount: fork + tilt group
+  for (const z of [-0.12, 0.12]) {
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.25, 0.02), brass);
+    arm.position.set(0, headY + 0.17, z);
+    root.add(arm);
+  }
+  const tilt = new THREE.Group();
+  tilt.position.set(0, headY + 0.28, 0);
+  tilt.rotation.z = 0.55;           // altitude angle
+  root.add(tilt);
+
+  // Main tube (along +x), stepped: dew shield, objective cell, tube, drawtube, eyepiece
+  const seg = (r0, r1, len, x, m) => {
+    const c = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, len, 32), m);
+    c.rotation.z = -Math.PI / 2;
+    c.position.x = x + len / 2;
+    tilt.add(c);
+    return c;
+  };
+  seg(0.09, 0.09, 1.3, -0.55, brass);
+  seg(0.1, 0.1, 0.06, 0.75, black);
+  seg(0.105, 0.105, 0.35, 0.81, brass);      // dew shield
+  seg(0.05, 0.05, 0.25, -0.8, brass);        // drawtube
+  seg(0.035, 0.05, 0.12, -0.92, black);      // eyepiece
+  for (const x of [-0.3, 0.3]) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.095, 0.012, 6, 24), black);
+    ring.rotation.y = Math.PI / 2;
+    ring.position.x = x;
+    tilt.add(ring);
+  }
+  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.098, 32), new THREE.MeshPhysicalMaterial({ color: 0x5577aa, roughness: 0.05, clearcoat: 1 }));
+  lens.rotation.y = Math.PI / 2;
+  lens.position.x = 0.8;
+  tilt.add(lens);
+  // Focus knob
+  const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.18, 12), brass);
+  knob.rotation.x = Math.PI / 2;
+  knob.position.x = -0.65;
+  tilt.add(knob);
+  // Finder scope on two brackets
+  const finder = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 16), brass);
+  finder.rotation.z = -Math.PI / 2;
+  finder.position.set(0.2, 0.16, 0);
+  tilt.add(finder);
+  for (const x of [0.08, 0.32]) {
+    const br = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.07, 0.02), black);
+    br.position.set(x, 0.12, 0);
+    tilt.add(br);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Desk Globe</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>32 · Desk Globe</b><br>A desk globe tilted at 23.5 degrees on a brass meridian ring and a turned wooden stand, with procedurally generated continents.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 32: "A desk globe tilted at 23.5 degrees on a brass meridian ring and a turned wooden stand, with procedurally generated continents."
+const meta = { id: '32', name: 'Desk Globe', prompt: 'A desk globe tilted at 23.5 degrees on a brass meridian ring and a turned wooden stand, with procedurally generated continents.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc8a14a, metalness: 1, roughness: 0.3 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x5b341c, roughness: 0.45 });
+
+  // Globe: vertex-colored sphere; land where a sum of low-frequency sines exceeds a threshold
+  const R = 0.9;
+  const g = new THREE.SphereGeometry(R, 96, 64);
+  const p = g.attributes.position;
+  const colors = [];
+  const ocean = new THREE.Color(0x2f6fa3), shallow = new THREE.Color(0x4f95c2), land = new THREE.Color(0xc9b77a), green = new THREE.Color(0x6f9a4f);
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i) / R, y = p.getY(i) / R, z = p.getZ(i) / R;
+    const n = Math.sin(3.1 * x + 1.3) * Math.cos(2.7 * z - 0.4) + 0.6 * Math.sin(5.3 * y + 2.1 * x) + 0.35 * Math.sin(9.1 * z + 4.0 * y) + 0.2 * Math.cos(13 * x - 7 * y);
+    const polar = Math.abs(y) > 0.9;
+    let c;
+    if (polar) c = new THREE.Color(0xf4f4f0);
+    else if (n > 0.55) c = green.clone().lerp(land, Math.min(1, (n - 0.55) * 1.5));
+    else if (n > 0.4) c = shallow;
+    else c = ocean;
+    colors.push(c.r, c.g, c.b);
+  }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+  const globe = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55 }));
+
+  // Tilted assembly: globe + meridian half ring + axis pins
+  const tilt = new THREE.Group();
+  tilt.position.y = 1.55;
+  tilt.rotation.z = (23.5 * Math.PI) / 180;
+  root.add(tilt);
+  tilt.add(globe);
+  const meridian = new THREE.Mesh(new THREE.TorusGeometry(R + 0.06, 0.025, 8, 64, Math.PI * 1.2), brass);
+  meridian.rotation.z = -Math.PI * 0.1 + Math.PI / 2;
+  tilt.add(meridian);
+  for (const s of [-1, 1]) {
+    const pin = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 8), brass);
+    pin.position.y = s * (R + 0.06);
+    tilt.add(pin);
+  }
+  // Equator grid lines (subtle latitude rings)
+  for (const lat of [-0.5, 0, 0.5]) {
+    const rr = R * Math.cos(lat) + 0.002;
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(rr, 0.003, 4, 96), new THREE.MeshBasicMaterial({ color: 0xe8e0c8 }));
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = R * Math.sin(lat);
+    tilt.add(ring);
+  }
+
+  // Stand: turned lathe column + base
+  const prof = [[0.001, 0], [0.55, 0], [0.55, 0.06], [0.45, 0.1], [0.2, 0.14], [0.08, 0.2], [0.12, 0.3], [0.06, 0.4], [0.05, 0.55], [0.09, 0.6], [0.04, 0.66], [0.001, 0.66]]
+    .map(([x, y]) => new THREE.Vector2(x, y));
+  root.add(new THREE.Mesh(new THREE.LatheGeometry(prof, 40), wood));
+  // Support arm from column up to the bottom of the meridian
+  const bottom = new THREE.Vector3(0, -(R + 0.06), 0).applyAxisAngle(new THREE.Vector3(0, 0, 1), (23.5 * Math.PI) / 180).add(new THREE.Vector3(0, 1.55, 0));
+  const arm = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0.62, 0), new THREE.Vector3(0.05, 0.64, 0), bottom]);
+  root.add(new THREE.Mesh(new THREE.TubeGeometry(arm, 12, 0.025, 8), brass));
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

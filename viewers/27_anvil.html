@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Anvil on Stump</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>27 · Anvil on Stump</b><br>A blacksmith's anvil with a tapered horn, a flat face with a hardy hole, a waisted body, mounted on a tree-stump block with a hammer resting on it.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 27: "A blacksmith's anvil with a tapered horn, a flat face with a hardy hole, a waisted body, mounted on a tree-stump block with a hammer resting on it."
+const meta = { id: '27', name: 'Anvil on Stump', prompt: "A blacksmith's anvil with a tapered horn, a flat face with a hardy hole, a waisted body, mounted on a tree-stump block with a hammer resting on it." };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const steel = new THREE.MeshStandardMaterial({ color: 0x3a3c40, metalness: 0.85, roughness: 0.4 });
+  const face = new THREE.MeshStandardMaterial({ color: 0x8d9096, metalness: 1, roughness: 0.2 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x7a5534, roughness: 0.95 });
+  const endGrain = new THREE.MeshStandardMaterial({ color: 0xc8a676, roughness: 0.9 });
+
+  // Stump (slightly irregular cylinder) + end-grain rings
+  const stumpGeo = new THREE.CylinderGeometry(0.7, 0.78, 1.0, 24, 4);
+  const sp = stumpGeo.attributes.position;
+  for (let i = 0; i < sp.count; i++) {
+    const a = Math.atan2(sp.getZ(i), sp.getX(i));
+    const k = 1 + 0.04 * Math.sin(a * 5) + 0.03 * Math.sin(a * 11);
+    sp.setX(i, sp.getX(i) * k); sp.setZ(i, sp.getZ(i) * k);
+  }
+  stumpGeo.computeVertexNormals();
+  const stump = new THREE.Mesh(stumpGeo, wood);
+  stump.position.y = 0.5;
+  root.add(stump);
+  for (let r = 0.15; r < 0.7; r += 0.15) {
+    const ring = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.012, 40), endGrain);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 1.001;
+    root.add(ring);
+  }
+
+  // Anvil side profile (XY), extruded along Z
+  const s = new THREE.Shape();
+  s.moveTo(-0.45, 0);            // foot
+  s.lineTo(0.45, 0);
+  s.lineTo(0.4, 0.1);
+  s.quadraticCurveTo(0.2, 0.18, 0.2, 0.32);   // waist
+  s.lineTo(0.55, 0.42);
+  s.lineTo(0.62, 0.62);          // heel
+  s.lineTo(-0.5, 0.62);          // face top
+  s.quadraticCurveTo(-1.05, 0.62, -1.15, 0.56); // horn top
+  s.quadraticCurveTo(-0.8, 0.44, -0.4, 0.42);   // horn underside
+  s.quadraticCurveTo(-0.2, 0.2, -0.4, 0.1);
+  s.lineTo(-0.45, 0);
+  const anvilGeo = new THREE.ExtrudeGeometry(s, { depth: 0.36, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02, curveSegments: 16 });
+  anvilGeo.translate(0, 0, -0.18);
+  const anvil = new THREE.Mesh(anvilGeo, steel);
+  anvil.position.y = 1.0;
+  root.add(anvil);
+  // Polished face plate + hardy / pritchel holes
+  const plate = new THREE.Mesh(new THREE.BoxGeometry(1.08, 0.015, 0.36), face);
+  plate.position.set(0.06, 1.63, 0);
+  root.add(plate);
+  const hardy = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.02, 0.07), new THREE.MeshStandardMaterial({ color: 0x000000 }));
+  hardy.position.set(0.45, 1.635, 0);
+  root.add(hardy);
+  const pritchel = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.02, 12), hardy.material);
+  pritchel.position.set(0.3, 1.635, 0);
+  root.add(pritchel);
+
+  // Hammer lying across the face
+  const hammer = new THREE.Group();
+  hammer.position.set(0.05, 1.7, 0.02);
+  hammer.rotation.y = 0.6;
+  root.add(hammer);
+  const headM = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.12, 0.34), steel);
+  hammer.add(headM);
+  const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.035, 0.9, 12), new THREE.MeshStandardMaterial({ color: 0xa87a4a, roughness: 0.7 }));
+  handle.rotation.z = Math.PI / 2;
+  handle.position.x = 0.5;
+  hammer.add(handle);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

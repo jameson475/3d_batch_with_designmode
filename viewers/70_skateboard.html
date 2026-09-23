@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Skateboard</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>70 · Skateboard</b><br>A skateboard with a concave deck, kicktails, trucks, and colorful wheels.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 70: "A skateboard with a concave deck, kicktails, trucks, and colorful wheels."
+const meta = { id: '70', name: 'Skateboard', prompt: 'A skateboard with a concave deck, kicktails, trucks, and colorful wheels.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const L = 2.6, W = 0.65;
+  // Deck: subdivided rounded plate; bend ends up (kicktails) and the middle into a concave
+  const s = new THREE.Shape();
+  s.moveTo(-L / 2 + W / 2, -W / 2); s.lineTo(L / 2 - W / 2, -W / 2); s.absarc(L / 2 - W / 2, 0, W / 2, -Math.PI / 2, Math.PI / 2, false);
+  s.lineTo(-L / 2 + W / 2, W / 2); s.absarc(-L / 2 + W / 2, 0, W / 2, Math.PI / 2, Math.PI * 1.5, false);
+  const g = new THREE.ExtrudeGeometry(s, { depth: 0.03, bevelEnabled: false, curveSegments: 20, steps: 1 });
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), y = p.getY(i);
+    const tail = Math.max(0, Math.abs(x) - (L / 2 - 0.45));
+    const lift = 0.9 * tail * tail + 0.35 * tail;
+    const concave = 0.06 * Math.pow((2 * y) / W, 2);
+    p.setZ(i, p.getZ(i) + lift + concave);
+  }
+  g.computeVertexNormals();
+  g.rotateX(-Math.PI / 2);
+  // Deck with a colorful grip underside: two materials via groups (top black grip, sides/bottom maple)
+  const deck = new THREE.Mesh(g, [new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 1 }), new THREE.MeshStandardMaterial({ color: 0xd9b27a, roughness: 0.6 })]);
+  deck.position.y = 0.38;
+  root.add(deck);
+  // Trucks + wheels
+  const metal = new THREE.MeshStandardMaterial({ color: 0xbfc3c8, metalness: 1, roughness: 0.3 });
+  const wheelCols = [0x2ec4b6, 0xff9f1c, 0xe71d36, 0x7b2cbf];
+  [-0.8, 0.8].forEach((x, ti) => {
+    const base = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.06, 0.18), metal);
+    base.position.set(x, 0.33, 0);
+    root.add(base);
+    const hanger = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.08, 0.55), metal);
+    hanger.position.set(x, 0.24, 0);
+    root.add(hanger);
+    const axle = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 8), metal);
+    axle.rotation.x = Math.PI / 2;
+    axle.position.set(x, 0.22, 0);
+    root.add(axle);
+    for (const z of [-0.34, 0.34]) {
+      const w = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.1, 24), new THREE.MeshStandardMaterial({ color: wheelCols[ti * 2 + (z > 0 ? 1 : 0)], roughness: 0.4 }));
+      w.rotation.x = Math.PI / 2;
+      w.position.set(x, 0.12, z);
+      root.add(w);
+    }
+  });
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Iced Donut</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>52 · Iced Donut</b><br>A donut with pink icing and sprinkles.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 52: "A donut with pink icing and sprinkles."
+const meta = { id: '52', name: 'Iced Donut', prompt: 'A donut with pink icing and sprinkles.', detail: 'simple' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const rng = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(52);
+  const dough = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.36, 24, 48), new THREE.MeshStandardMaterial({ color: 0xd9a066, roughness: 0.8 }));
+  dough.rotation.x = Math.PI / 2;
+  dough.scale.z = 0.85;
+  root.add(dough);
+  // Icing: upper half of a slightly larger torus with a wavy lower edge
+  const ig = new THREE.TorusGeometry(0.7, 0.375, 24, 96);
+  const p = ig.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+    const a = Math.atan2(y, x);
+    const edge = -0.05 + 0.06 * Math.sin(a * 9);
+    if (z < edge) p.setZ(i, edge);   // flatten the underside onto the drip line
+  }
+  ig.computeVertexNormals();
+  const icing = new THREE.Mesh(ig, new THREE.MeshPhysicalMaterial({ color: 0xf28bb3, roughness: 0.3, clearcoat: 0.5 }));
+  icing.rotation.x = -Math.PI / 2;
+  icing.scale.z = 0.88;
+  root.add(icing);
+  const sg = new THREE.CapsuleGeometry(0.015, 0.06, 2, 6);
+  const cols = [0xffffff, 0xffd93d, 0x4d96ff, 0x6bcb77, 0xff6b6b];
+  for (let i = 0; i < 70; i++) {
+    const a = rng() * Math.PI * 2, b = rng() * Math.PI * 0.8 - 0.4;
+    const s = new THREE.Mesh(sg, new THREE.MeshStandardMaterial({ color: cols[i % 5] }));
+    s.position.set(Math.cos(a) * (0.7 + Math.sin(b) * 0.37), Math.cos(b) * 0.33, Math.sin(a) * (0.7 + Math.sin(b) * 0.37));
+    s.rotation.set(rng() * 3, rng() * 3, rng() * 3);
+    root.add(s);
+  }
+  root.position.y = 0.32;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

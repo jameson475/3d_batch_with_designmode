@@ -1,0 +1,2352 @@
+[
+  {
+    "file": "01_desk_lamp.js",
+    "id": "01",
+    "name": "Articulated Desk Lamp",
+    "prompt": "An articulated desk lamp with a weighted round base, two arm segments joined by hinges, and a cone shade with a glowing bulb.",
+    "lines": 64,
+    "chars": 2245,
+    "codeTokens": 772,
+    "promptTokens": 28,
+    "stats": {
+      "meshes": 8,
+      "triangles": 1368,
+      "materials": 4,
+      "uniqueGeometries": 7,
+      "lights": 1,
+      "bbox": [
+        2.04,
+        3.53,
+        2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "02_wooden_chair.js",
+    "id": "02",
+    "name": "Scandinavian Wooden Chair",
+    "prompt": "A simple Scandinavian wooden dining chair with four tapered legs, a slatted backrest, and a light oak finish.",
+    "lines": 48,
+    "chars": 1882,
+    "codeTokens": 677,
+    "promptTokens": 25,
+    "stats": {
+      "meshes": 13,
+      "triangles": 300,
+      "materials": 2,
+      "uniqueGeometries": 6,
+      "lights": 0,
+      "bbox": [
+        1,
+        2,
+        0.95
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "03_ceramic_mug.js",
+    "id": "03",
+    "name": "Ceramic Coffee Mug",
+    "prompt": "A glazed ceramic coffee mug with a curved handle, a thick rim, and dark coffee inside.",
+    "lines": 34,
+    "chars": 1389,
+    "codeTokens": 500,
+    "promptTokens": 20,
+    "stats": {
+      "meshes": 3,
+      "triangles": 2608,
+      "materials": 2,
+      "uniqueGeometries": 3,
+      "lights": 0,
+      "bbox": [
+        1.8,
+        1.36,
+        1.36
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "04_potted_succulent.js",
+    "id": "04",
+    "name": "Potted Succulent",
+    "prompt": "A small terracotta pot holding an echeveria succulent with rosette leaves arranged in a golden-angle spiral.",
+    "lines": 42,
+    "chars": 1810,
+    "codeTokens": 613,
+    "promptTokens": 27,
+    "stats": {
+      "meshes": 37,
+      "triangles": 12320,
+      "materials": 36,
+      "uniqueGeometries": 4,
+      "lights": 0,
+      "bbox": [
+        1.64,
+        1.37,
+        1.64
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "05_retro_rocket.js",
+    "id": "05",
+    "name": "Retro Rocket",
+    "prompt": "A 1950s retro rocket ship with a pointed nose cone, porthole window, three swept fins, and a flame exhaust.",
+    "lines": 61,
+    "chars": 2476,
+    "codeTokens": 885,
+    "promptTokens": 25,
+    "stats": {
+      "meshes": 9,
+      "triangles": 3380,
+      "materials": 4,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        1.76,
+        4.6,
+        1.94
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "06_lighthouse.js",
+    "id": "06",
+    "name": "Striped Lighthouse",
+    "prompt": "A red-and-white striped lighthouse on a rocky base, with a gallery railing and a glowing lantern room.",
+    "lines": 66,
+    "chars": 2913,
+    "codeTokens": 1082,
+    "promptTokens": 27,
+    "stats": {
+      "meshes": 35,
+      "triangles": 2908,
+      "materials": 5,
+      "uniqueGeometries": 35,
+      "lights": 1,
+      "bbox": [
+        2.95,
+        5.19,
+        3
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "07_bonsai_tree.js",
+    "id": "07",
+    "name": "Recursive Bonsai",
+    "prompt": "A bonsai tree in a shallow rectangular tray, with a recursively branching trunk and clustered foliage pads.",
+    "lines": 51,
+    "chars": 2318,
+    "codeTokens": 805,
+    "promptTokens": 21,
+    "stats": {
+      "meshes": 237,
+      "triangles": 5384,
+      "materials": 4,
+      "uniqueGeometries": 237,
+      "lights": 0,
+      "bbox": [
+        2.54,
+        2.96,
+        2.06
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "08_toy_robot.js",
+    "id": "08",
+    "name": "Tin Toy Robot",
+    "prompt": "A boxy tin toy robot with antenna, glowing eyes, chest dial panel, jointed arms with claw hands, and wind-up key.",
+    "lines": 78,
+    "chars": 3156,
+    "codeTokens": 1208,
+    "promptTokens": 29,
+    "stats": {
+      "meshes": 30,
+      "triangles": 2780,
+      "materials": 4,
+      "uniqueGeometries": 30,
+      "lights": 0,
+      "bbox": [
+        2.29,
+        3.35,
+        1.23
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "09_spiral_staircase.js",
+    "id": "09",
+    "name": "Spiral Staircase",
+    "prompt": "A cast-iron spiral staircase with 20 wedge-shaped treads around a central pole and a helical handrail.",
+    "lines": 53,
+    "chars": 2023,
+    "codeTokens": 702,
+    "promptTokens": 24,
+    "stats": {
+      "meshes": 43,
+      "triangles": 5216,
+      "materials": 2,
+      "uniqueGeometries": 5,
+      "lights": 0,
+      "bbox": [
+        2.21,
+        4.53,
+        2.21
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "10_hot_air_balloon.js",
+    "id": "10",
+    "name": "Hot Air Balloon",
+    "prompt": "A hot air balloon with a teardrop envelope in alternating colored gores, suspension ropes, a burner, and a wicker basket.",
+    "lines": 61,
+    "chars": 2800,
+    "codeTokens": 990,
+    "promptTokens": 28,
+    "stats": {
+      "meshes": 16,
+      "triangles": 4772,
+      "materials": 16,
+      "uniqueGeometries": 16,
+      "lights": 0,
+      "bbox": [
+        2.5,
+        4.2,
+        2.5
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "11_vintage_radio.js",
+    "id": "11",
+    "name": "Vintage Tube Radio",
+    "prompt": "A 1940s tabletop tube radio with a rounded-top walnut cabinet, a fabric speaker grille, a glowing tuning dial, and two knobs.",
+    "lines": 60,
+    "chars": 2727,
+    "codeTokens": 998,
+    "promptTokens": 32,
+    "stats": {
+      "meshes": 19,
+      "triangles": 1917,
+      "materials": 5,
+      "uniqueGeometries": 19,
+      "lights": 0,
+      "bbox": [
+        2.1,
+        2.33,
+        1.12
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "12_windmill.js",
+    "id": "12",
+    "name": "Dutch Windmill",
+    "prompt": "A Dutch windmill with an octagonal tapered tower, a thatched cap, four lattice sails, and a wraparound balcony.",
+    "lines": 72,
+    "chars": 3039,
+    "codeTokens": 1099,
+    "promptTokens": 29,
+    "stats": {
+      "meshes": 63,
+      "triangles": 868,
+      "materials": 5,
+      "uniqueGeometries": 63,
+      "lights": 0,
+      "bbox": [
+        4.72,
+        6.3,
+        4.1
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "13_sailboat.js",
+    "id": "13",
+    "name": "Wooden Sloop",
+    "prompt": "A small wooden sloop sailboat with a curved hull, a single mast, a triangular mainsail and jib, and a boom.",
+    "lines": 76,
+    "chars": 3555,
+    "codeTokens": 1320,
+    "promptTokens": 29,
+    "stats": {
+      "meshes": 6,
+      "triangles": 1434,
+      "materials": 4,
+      "uniqueGeometries": 6,
+      "lights": 0,
+      "bbox": [
+        3.2,
+        3.95,
+        1.14
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "14_acoustic_guitar.js",
+    "id": "14",
+    "name": "Acoustic Guitar",
+    "prompt": "An acoustic guitar with a figure-eight spruce body, a sound hole with rosette, a long fretted neck, a headstock with tuning pegs, and six strings.",
+    "lines": 84,
+    "chars": 3560,
+    "codeTokens": 1265,
+    "promptTokens": 37,
+    "stats": {
+      "meshes": 30,
+      "triangles": 1892,
+      "materials": 4,
+      "uniqueGeometries": 30,
+      "lights": 0,
+      "bbox": [
+        3.18,
+        4.6,
+        0.41
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "15_park_bench.js",
+    "id": "15",
+    "name": "Cast-Iron Park Bench",
+    "prompt": "A classic park bench with cast-iron scrolled side frames, wooden slat seat and curved backrest, and armrests.",
+    "lines": 57,
+    "chars": 2652,
+    "codeTokens": 1010,
+    "promptTokens": 27,
+    "stats": {
+      "meshes": 18,
+      "triangles": 5624,
+      "materials": 2,
+      "uniqueGeometries": 18,
+      "lights": 0,
+      "bbox": [
+        3,
+        1.77,
+        1.3
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "16_mushroom_cluster.js",
+    "id": "16",
+    "name": "Mushroom Cluster",
+    "prompt": "A cluster of five fly-agaric mushrooms of different sizes growing from a mossy log, red caps with white spots.",
+    "lines": 54,
+    "chars": 2678,
+    "codeTokens": 1028,
+    "promptTokens": 25,
+    "stats": {
+      "meshes": 71,
+      "triangles": 8300,
+      "materials": 5,
+      "uniqueGeometries": 71,
+      "lights": 0,
+      "bbox": [
+        3,
+        2.32,
+        1.05
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "17_castle_tower.js",
+    "id": "17",
+    "name": "Castle Tower",
+    "prompt": "A medieval stone castle tower with crenellated battlements, arrow-slit windows, a wooden door, and a flag on a pole.",
+    "lines": 69,
+    "chars": 3140,
+    "codeTokens": 1168,
+    "promptTokens": 30,
+    "stats": {
+      "meshes": 25,
+      "triangles": 1704,
+      "materials": 5,
+      "uniqueGeometries": 25,
+      "lights": 0,
+      "bbox": [
+        2.5,
+        5.36,
+        2.5
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "18_hourglass.js",
+    "id": "18",
+    "name": "Antique Hourglass",
+    "prompt": "An antique hourglass with a turned wooden frame, three spindle posts, a glass double bulb, and sand mid-flow.",
+    "lines": 69,
+    "chars": 3005,
+    "codeTokens": 1083,
+    "promptTokens": 25,
+    "stats": {
+      "meshes": 11,
+      "triangles": 10776,
+      "materials": 3,
+      "uniqueGeometries": 9,
+      "lights": 0,
+      "bbox": [
+        1.7,
+        2.8,
+        1.7
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "19_satellite.js",
+    "id": "19",
+    "name": "Comms Satellite",
+    "prompt": "A communications satellite with a gold-foil bus, two deployable solar panel wings, a parabolic dish antenna, and thruster nozzles.",
+    "lines": 76,
+    "chars": 3749,
+    "codeTokens": 1376,
+    "promptTokens": 29,
+    "stats": {
+      "meshes": 55,
+      "triangles": 2780,
+      "materials": 5,
+      "uniqueGeometries": 55,
+      "lights": 0,
+      "bbox": [
+        7.23,
+        1.58,
+        3.27
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "20_treasure_chest.js",
+    "id": "20",
+    "name": "Treasure Chest",
+    "prompt": "A pirate treasure chest with a half-cylinder lid propped open, iron bands and rivets, a padlock hasp, and gold coins spilling out.",
+    "lines": 76,
+    "chars": 3660,
+    "codeTokens": 1443,
+    "promptTokens": 34,
+    "stats": {
+      "meshes": 194,
+      "triangles": 12168,
+      "materials": 7,
+      "uniqueGeometries": 25,
+      "lights": 0,
+      "bbox": [
+        2.1,
+        2.1,
+        2.77
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "21_bicycle.js",
+    "id": "21",
+    "name": "City Bicycle",
+    "prompt": "A classic city bicycle with spoked wheels, a diamond steel frame, a leather saddle, curved handlebars, and a front basket.",
+    "lines": 72,
+    "chars": 3735,
+    "codeTokens": 1395,
+    "promptTokens": 27,
+    "stats": {
+      "meshes": 70,
+      "triangles": 5788,
+      "materials": 5,
+      "uniqueGeometries": 70,
+      "lights": 0,
+      "bbox": [
+        3.43,
+        1.61,
+        0.67
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "22_grand_piano.js",
+    "id": "22",
+    "name": "Grand Piano",
+    "prompt": "A glossy black grand piano with a curved case, a propped-open lid, 52 white and 36 black keys, three legs, and pedals.",
+    "lines": 83,
+    "chars": 3602,
+    "codeTokens": 1380,
+    "promptTokens": 32,
+    "stats": {
+      "meshes": 103,
+      "triangles": 1780,
+      "materials": 4,
+      "uniqueGeometries": 14,
+      "lights": 0,
+      "bbox": [
+        1.62,
+        1.94,
+        2.42
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "23_teapot.js",
+    "id": "23",
+    "name": "Porcelain Teapot",
+    "prompt": "A round porcelain teapot with blue bands, a curved spout, a loop handle, and a lid with a knob, on a saucer.",
+    "lines": 69,
+    "chars": 3258,
+    "codeTokens": 1251,
+    "promptTokens": 32,
+    "stats": {
+      "meshes": 9,
+      "triangles": 8536,
+      "materials": 2,
+      "uniqueGeometries": 9,
+      "lights": 0,
+      "bbox": [
+        2.54,
+        1.64,
+        2.4
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "24_film_camera.js",
+    "id": "24",
+    "name": "Rangefinder Camera",
+    "prompt": "A vintage 35mm rangefinder film camera with a leatherette body, chrome top plate, a lens barrel with focus ring, dials, and a shutter button.",
+    "lines": 82,
+    "chars": 3460,
+    "codeTokens": 1293,
+    "promptTokens": 33,
+    "stats": {
+      "meshes": 53,
+      "triangles": 2904,
+      "materials": 4,
+      "uniqueGeometries": 53,
+      "lights": 0,
+      "bbox": [
+        1.46,
+        0.9,
+        0.72
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "25_desk_fan.js",
+    "id": "25",
+    "name": "Retro Desk Fan",
+    "prompt": "A retro oscillating desk fan with a round wire cage, four curved blades, a motor housing, a tilting neck, and a heavy base.",
+    "lines": 83,
+    "chars": 3520,
+    "codeTokens": 1299,
+    "promptTokens": 30,
+    "stats": {
+      "meshes": 63,
+      "triangles": 8036,
+      "materials": 3,
+      "uniqueGeometries": 60,
+      "lights": 0,
+      "bbox": [
+        1.48,
+        1.98,
+        1.44
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "26_wine_set.js",
+    "id": "26",
+    "name": "Wine Bottle & Glass",
+    "prompt": "A dark green wine bottle with a cork and label beside a stemmed wine glass half-filled with red wine.",
+    "lines": 49,
+    "chars": 3189,
+    "codeTokens": 1212,
+    "promptTokens": 22,
+    "stats": {
+      "meshes": 7,
+      "triangles": 6640,
+      "materials": 7,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        1.72,
+        2.86,
+        0.73
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "27_anvil.js",
+    "id": "27",
+    "name": "Anvil on Stump",
+    "prompt": "A blacksmith's anvil with a tapered horn, a flat face with a hardy hole, a waisted body, mounted on a tree-stump block with a hammer resting on it.",
+    "lines": 72,
+    "chars": 3398,
+    "codeTokens": 1258,
+    "promptTokens": 40,
+    "stats": {
+      "meshes": 11,
+      "triangles": 1808,
+      "materials": 6,
+      "uniqueGeometries": 11,
+      "lights": 0,
+      "bbox": [
+        2.03,
+        1.76,
+        1.56
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "28_fire_hydrant.js",
+    "id": "28",
+    "name": "Fire Hydrant",
+    "prompt": "A red cast-iron fire hydrant with a domed bonnet, a pentagonal operating nut, two side hose outlets with chained caps, and a flanged base bolted to the sidewalk.",
+    "lines": 61,
+    "chars": 2898,
+    "codeTokens": 1073,
+    "promptTokens": 41,
+    "stats": {
+      "meshes": 32,
+      "triangles": 3304,
+      "materials": 4,
+      "uniqueGeometries": 32,
+      "lights": 0,
+      "bbox": [
+        2.2,
+        1.52,
+        2.2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "29_umbrella.js",
+    "id": "29",
+    "name": "Open Umbrella",
+    "prompt": "An open umbrella with an eight-panel canopy in alternating colors, visible ribs, a finial tip, and a curved wooden J-handle, tilted as if held.",
+    "lines": 73,
+    "chars": 3677,
+    "codeTokens": 1354,
+    "promptTokens": 34,
+    "stats": {
+      "meshes": 36,
+      "triangles": 3520,
+      "materials": 10,
+      "uniqueGeometries": 36,
+      "lights": 0,
+      "bbox": [
+        2.88,
+        2.75,
+        2.84
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "30_pagoda.js",
+    "id": "30",
+    "name": "Five-Tier Pagoda",
+    "prompt": "A five-tiered East Asian pagoda on a stone plinth, each tier with red columns and upturned curved eaves, topped by a bronze spire with rings.",
+    "lines": 73,
+    "chars": 3190,
+    "codeTokens": 1122,
+    "promptTokens": 36,
+    "stats": {
+      "meshes": 107,
+      "triangles": 7796,
+      "materials": 5,
+      "uniqueGeometries": 107,
+      "lights": 0,
+      "bbox": [
+        2.6,
+        5.16,
+        2.6
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "31_steam_locomotive.js",
+    "id": "31",
+    "name": "Steam Locomotive",
+    "prompt": "A toy-scale steam locomotive with a cylindrical boiler, smokestack, steam dome, cab with windows, cowcatcher, and six red driving wheels linked by coupling rods.",
+    "lines": 101,
+    "chars": 4419,
+    "codeTokens": 1623,
+    "promptTokens": 35,
+    "stats": {
+      "meshes": 32,
+      "triangles": 3440,
+      "materials": 5,
+      "uniqueGeometries": 27,
+      "lights": 0,
+      "bbox": [
+        4,
+        2.05,
+        1.17
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "32_desk_globe.js",
+    "id": "32",
+    "name": "Desk Globe",
+    "prompt": "A desk globe tilted at 23.5 degrees on a brass meridian ring and a turned wooden stand, with procedurally generated continents.",
+    "lines": 62,
+    "chars": 3347,
+    "codeTokens": 1245,
+    "promptTokens": 27,
+    "stats": {
+      "meshes": 9,
+      "triangles": 16832,
+      "materials": 6,
+      "uniqueGeometries": 9,
+      "lights": 0,
+      "bbox": [
+        2.37,
+        2.73,
+        1.81
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "33_bookshelf.js",
+    "id": "33",
+    "name": "Filled Bookshelf",
+    "prompt": "A wooden bookshelf with four shelves filled with books of varied heights, thicknesses and colors, some leaning, plus a small plant on top.",
+    "lines": 68,
+    "chars": 3480,
+    "codeTokens": 1332,
+    "promptTokens": 30,
+    "stats": {
+      "meshes": 138,
+      "triangles": 1780,
+      "materials": 126,
+      "uniqueGeometries": 60,
+      "lights": 0,
+      "bbox": [
+        2,
+        3.18,
+        0.5
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "34_candelabra.js",
+    "id": "34",
+    "name": "Silver Candelabra",
+    "prompt": "An ornate silver five-arm candelabra with S-curved arms, drip cups, lit white candles with flames, and a turned base.",
+    "lines": 64,
+    "chars": 3430,
+    "codeTokens": 1316,
+    "promptTokens": 33,
+    "stats": {
+      "meshes": 29,
+      "triangles": 8960,
+      "materials": 8,
+      "uniqueGeometries": 25,
+      "lights": 1,
+      "bbox": [
+        1.52,
+        2.44,
+        1.12
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "35_birdhouse.js",
+    "id": "35",
+    "name": "Birdhouse",
+    "prompt": "A painted wooden birdhouse on a post, with a pitched shingled roof, a round entrance hole, a perch dowel, and a small bird sitting on the roof.",
+    "lines": 85,
+    "chars": 3867,
+    "codeTokens": 1393,
+    "promptTokens": 37,
+    "stats": {
+      "meshes": 70,
+      "triangles": 1776,
+      "materials": 7,
+      "uniqueGeometries": 70,
+      "lights": 0,
+      "bbox": [
+        0.83,
+        3.33,
+        0.95
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "36_snowman.js",
+    "id": "36",
+    "name": "Snowman",
+    "prompt": "A three-ball snowman with a carrot nose, coal eyes and buttons, stick arms, a knitted striped scarf, and a black top hat, standing on a snowy mound.",
+    "lines": 94,
+    "chars": 4571,
+    "codeTokens": 1712,
+    "promptTokens": 40,
+    "stats": {
+      "meshes": 41,
+      "triangles": 9860,
+      "materials": 23,
+      "uniqueGeometries": 41,
+      "lights": 0,
+      "bbox": [
+        4,
+        3.58,
+        4
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "37_telescope.js",
+    "id": "37",
+    "name": "Brass Telescope",
+    "prompt": "A brass refracting telescope on a wooden tripod with an altitude mount, a finder scope, an eyepiece, and a dew shield, pointed at the sky.",
+    "lines": 83,
+    "chars": 3652,
+    "codeTokens": 1344,
+    "promptTokens": 35,
+    "stats": {
+      "meshes": 22,
+      "triangles": 1600,
+      "materials": 4,
+      "uniqueGeometries": 22,
+      "lights": 0,
+      "bbox": [
+        1.85,
+        2.59,
+        1.44
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "38_wooden_barrel.js",
+    "id": "38",
+    "name": "Oak Barrel",
+    "prompt": "An oak wine barrel built from individual bulging staves held by four iron hoops, with a round head and a bung hole, lying on a wooden cradle.",
+    "lines": 73,
+    "chars": 3644,
+    "codeTokens": 1300,
+    "promptTokens": 34,
+    "stats": {
+      "meshes": 36,
+      "triangles": 3936,
+      "materials": 32,
+      "uniqueGeometries": 36,
+      "lights": 0,
+      "bbox": [
+        1.6,
+        1.51,
+        1.41
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "39_wind_chime.js",
+    "id": "39",
+    "name": "Wind Chime",
+    "prompt": "A hanging wind chime with a round wooden top disk, six aluminum tubes of graded lengths on strings, a central striker, and a sail.",
+    "lines": 56,
+    "chars": 2810,
+    "codeTokens": 1003,
+    "promptTokens": 28,
+    "stats": {
+      "meshes": 10,
+      "triangles": 924,
+      "materials": 2,
+      "uniqueGeometries": 10,
+      "lights": 0,
+      "bbox": [
+        0.84,
+        3.34,
+        0.84
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "40_oil_lantern.js",
+    "id": "40",
+    "name": "Hurricane Lantern",
+    "prompt": "A hurricane oil lantern with a red-painted fuel tank, a glass globe with a glowing flame, a wire guard, a vented cap, and a bail handle.",
+    "lines": 72,
+    "chars": 3747,
+    "codeTokens": 1421,
+    "promptTokens": 36,
+    "stats": {
+      "meshes": 26,
+      "triangles": 6448,
+      "materials": 12,
+      "uniqueGeometries": 26,
+      "lights": 1,
+      "bbox": [
+        1.12,
+        1.61,
+        1.12
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "41_office_chair.js",
+    "id": "41",
+    "name": "Office Swivel Chair",
+    "prompt": "An ergonomic office swivel chair with a five-star base on casters, a gas-lift column, a padded seat, a curved mesh backrest, and armrests.",
+    "lines": 85,
+    "chars": 4256,
+    "codeTokens": 1595,
+    "promptTokens": 39,
+    "stats": {
+      "meshes": 29,
+      "triangles": 1976,
+      "materials": 5,
+      "uniqueGeometries": 29,
+      "lights": 0,
+      "bbox": [
+        1.25,
+        1.32,
+        1.32
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "42_knight_helmet.js",
+    "id": "42",
+    "name": "Knight's Great Helm",
+    "prompt": "A medieval knight's great helm on a display stand: a steel bucket helmet with a riveted cross reinforcement, eye slits, breathing holes, and a red plume.",
+    "lines": 76,
+    "chars": 3583,
+    "codeTokens": 1298,
+    "promptTokens": 36,
+    "stats": {
+      "meshes": 35,
+      "triangles": 2244,
+      "materials": 6,
+      "uniqueGeometries": 35,
+      "lights": 0,
+      "bbox": [
+        1.2,
+        2.76,
+        1.2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "43_microscope.js",
+    "id": "43",
+    "name": "Compound Microscope",
+    "prompt": "A laboratory compound microscope with a curved arm, an angled eyepiece tube, a rotating nosepiece with three objectives, a mechanical stage with slide clips, coarse and fine focus knobs, and a base lamp.",
+    "lines": 99,
+    "chars": 4723,
+    "codeTokens": 1737,
+    "promptTokens": 44,
+    "stats": {
+      "meshes": 25,
+      "triangles": 1700,
+      "materials": 8,
+      "uniqueGeometries": 25,
+      "lights": 0,
+      "bbox": [
+        0.9,
+        1.85,
+        1.17
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "44_cupcake.js",
+    "id": "44",
+    "name": "Frosted Cupcake",
+    "prompt": "A cupcake in a pleated paper liner topped with a swirled pink frosting spiral, rainbow sprinkles, and a cherry with a stem.",
+    "lines": 75,
+    "chars": 3687,
+    "codeTokens": 1326,
+    "promptTokens": 30,
+    "stats": {
+      "meshes": 96,
+      "triangles": 19260,
+      "materials": 95,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        1.31,
+        1.82,
+        1.28
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "45_traffic_cones.js",
+    "id": "45",
+    "name": "Traffic Cones & Barrier",
+    "prompt": "Three orange traffic cones with white reflective bands on square black bases, one knocked over, next to a striped road barrier on A-frame legs.",
+    "lines": 73,
+    "chars": 3361,
+    "codeTokens": 1185,
+    "promptTokens": 31,
+    "stats": {
+      "meshes": 28,
+      "triangles": 872,
+      "materials": 11,
+      "uniqueGeometries": 28,
+      "lights": 0,
+      "bbox": [
+        4.2,
+        1.13,
+        2.6
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "46_chess_set.js",
+    "id": "46",
+    "name": "Staunton Chess Pieces",
+    "prompt": "A corner of a wooden chessboard with a Staunton-style king, queen, rook, bishop, and pawn in ivory and ebony, all turned on a lathe.",
+    "lines": 79,
+    "chars": 3841,
+    "codeTokens": 1576,
+    "promptTokens": 40,
+    "stats": {
+      "meshes": 45,
+      "triangles": 9684,
+      "materials": 18,
+      "uniqueGeometries": 45,
+      "lights": 0,
+      "bbox": [
+        2,
+        1.01,
+        2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "47_wheelbarrow.js",
+    "id": "47",
+    "name": "Garden Wheelbarrow",
+    "prompt": "A garden wheelbarrow with a deep green steel tray, a single pneumatic front wheel, tubular handles with rubber grips, rear legs, and a load of soil.",
+    "lines": 79,
+    "chars": 4202,
+    "codeTokens": 1608,
+    "promptTokens": 36,
+    "stats": {
+      "meshes": 14,
+      "triangles": 3742,
+      "materials": 5,
+      "uniqueGeometries": 14,
+      "lights": 0,
+      "bbox": [
+        2.84,
+        1.14,
+        0.94
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "48_jellyfish.js",
+    "id": "48",
+    "name": "Glowing Jellyfish",
+    "prompt": "A translucent glowing jellyfish with a scalloped bell, frilly oral arms, and long trailing tentacles that wave in sine curves.",
+    "lines": 79,
+    "chars": 3778,
+    "codeTokens": 1401,
+    "promptTokens": 28,
+    "stats": {
+      "meshes": 25,
+      "triangles": 22144,
+      "materials": 3,
+      "uniqueGeometries": 25,
+      "lights": 1,
+      "bbox": [
+        1.92,
+        3.45,
+        1.92
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "49_grandfather_clock.js",
+    "id": "49",
+    "name": "Grandfather Clock",
+    "prompt": "A tall mahogany grandfather clock with an arched hood, a clock face with Roman-numeral ticks and hands, a glass-front trunk showing a brass pendulum and weights, and a plinth base.",
+    "lines": 92,
+    "chars": 4552,
+    "codeTokens": 1760,
+    "promptTokens": 43,
+    "stats": {
+      "meshes": 89,
+      "triangles": 3208,
+      "materials": 5,
+      "uniqueGeometries": 89,
+      "lights": 0,
+      "bbox": [
+        0.9,
+        3.37,
+        0.58
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "50_ferris_wheel.js",
+    "id": "50",
+    "name": "Ferris Wheel",
+    "prompt": "A carnival Ferris wheel with a double-rim spoked wheel, twelve colorful gondolas hanging level, an A-frame support tower, and light bulbs along the rim.",
+    "lines": 95,
+    "chars": 4378,
+    "codeTokens": 1650,
+    "promptTokens": 39,
+    "stats": {
+      "meshes": 264,
+      "triangles": 20876,
+      "materials": 16,
+      "uniqueGeometries": 110,
+      "lights": 1,
+      "bbox": [
+        4.52,
+        4.77,
+        1.4
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "51_apple.js",
+    "id": "51",
+    "name": "Apple",
+    "prompt": "A red apple.",
+    "detail": "simple",
+    "lines": 27,
+    "chars": 1244,
+    "codeTokens": 492,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 3,
+      "triangles": 3272,
+      "materials": 3,
+      "uniqueGeometries": 3,
+      "lights": 0,
+      "bbox": [
+        1.94,
+        1.87,
+        1.94
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "52_donut.js",
+    "id": "52",
+    "name": "Iced Donut",
+    "prompt": "A donut with pink icing and sprinkles.",
+    "detail": "simple",
+    "lines": 37,
+    "chars": 1753,
+    "codeTokens": 676,
+    "promptTokens": 11,
+    "stats": {
+      "meshes": 72,
+      "triangles": 14472,
+      "materials": 72,
+      "uniqueGeometries": 3,
+      "lights": 0,
+      "bbox": [
+        2.19,
+        0.68,
+        2.18
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "53_coffee_table.js",
+    "id": "53",
+    "name": "Mid-Century Coffee Table",
+    "prompt": "A mid-century modern coffee table with a walnut oval top and splayed legs.",
+    "detail": "medium",
+    "lines": 29,
+    "chars": 1513,
+    "codeTokens": 563,
+    "promptTokens": 19,
+    "stats": {
+      "meshes": 10,
+      "triangles": 1664,
+      "materials": 5,
+      "uniqueGeometries": 10,
+      "lights": 0,
+      "bbox": [
+        2.9,
+        0.78,
+        1.55
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "54_rubber_duck.js",
+    "id": "54",
+    "name": "Rubber Duck",
+    "prompt": "A rubber duck.",
+    "detail": "simple",
+    "lines": 33,
+    "chars": 1407,
+    "codeTokens": 527,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 7,
+      "triangles": 4200,
+      "materials": 4,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        2.35,
+        1.76,
+        1.39
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "55_pencil.js",
+    "id": "55",
+    "name": "Pencil",
+    "prompt": "A yellow pencil.",
+    "detail": "simple",
+    "lines": 25,
+    "chars": 1301,
+    "codeTokens": 474,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 5,
+      "triangles": 252,
+      "materials": 5,
+      "uniqueGeometries": 5,
+      "lights": 0,
+      "bbox": [
+        4.05,
+        0.83,
+        0.25
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "56_alarm_clock.js",
+    "id": "56",
+    "name": "Twin-Bell Alarm Clock",
+    "prompt": "A classic twin-bell alarm clock with a hammer between the bells and little feet.",
+    "detail": "medium",
+    "lines": 54,
+    "chars": 2662,
+    "codeTokens": 993,
+    "promptTokens": 17,
+    "stats": {
+      "meshes": 26,
+      "triangles": 3156,
+      "materials": 4,
+      "uniqueGeometries": 26,
+      "lights": 0,
+      "bbox": [
+        1.51,
+        2.04,
+        0.56
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "57_saguaro_cactus.js",
+    "id": "57",
+    "name": "Potted Saguaro",
+    "prompt": "A saguaro cactus with two arms in a clay pot, with ribbed stems and spines.",
+    "detail": "medium",
+    "lines": 50,
+    "chars": 2149,
+    "codeTokens": 815,
+    "promptTokens": 23,
+    "stats": {
+      "meshes": 183,
+      "triangles": 11776,
+      "materials": 4,
+      "uniqueGeometries": 183,
+      "lights": 0,
+      "bbox": [
+        1.48,
+        2.9,
+        1.1
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "58_laptop.js",
+    "id": "58",
+    "name": "Open Laptop",
+    "prompt": "An open laptop with a keyboard, trackpad, and a glowing screen.",
+    "detail": "medium",
+    "lines": 47,
+    "chars": 2432,
+    "codeTokens": 905,
+    "promptTokens": 15,
+    "stats": {
+      "meshes": 76,
+      "triangles": 906,
+      "materials": 5,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        2.4,
+        1.62,
+        2.09
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "59_electric_guitar.js",
+    "id": "59",
+    "name": "Electric Guitar",
+    "prompt": "A sunburst electric guitar with an offset double-cutaway solid body, a white pickguard, three single-coil pickups, volume and tone knobs, a whammy bar, a maple neck with dot inlays, and a six-in-line headstock.",
+    "detail": "detailed",
+    "lines": 111,
+    "chars": 5698,
+    "codeTokens": 2203,
+    "promptTokens": 59,
+    "stats": {
+      "meshes": 67,
+      "triangles": 4150,
+      "materials": 13,
+      "uniqueGeometries": 67,
+      "lights": 0,
+      "bbox": [
+        3.09,
+        4.04,
+        0.44
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "60_space_shuttle.js",
+    "id": "60",
+    "name": "Space Shuttle Stack",
+    "prompt": "A space shuttle orbiter stacked for launch: the white orbiter with black heat-shield underside and delta wings, mounted on a large orange external fuel tank flanked by two white solid rocket boosters, standing on a launch platform.",
+    "detail": "detailed",
+    "lines": 104,
+    "chars": 5051,
+    "codeTokens": 1869,
+    "promptTokens": 48,
+    "stats": {
+      "meshes": 25,
+      "triangles": 5546,
+      "materials": 7,
+      "uniqueGeometries": 25,
+      "lights": 0,
+      "bbox": [
+        3.2,
+        5.1,
+        2.4
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "61_tree.js",
+    "id": "61",
+    "name": "Tree",
+    "prompt": "A tree.",
+    "detail": "simple",
+    "lines": 20,
+    "chars": 969,
+    "codeTokens": 356,
+    "promptTokens": 3,
+    "stats": {
+      "meshes": 13,
+      "triangles": 1008,
+      "materials": 13,
+      "uniqueGeometries": 13,
+      "lights": 0,
+      "bbox": [
+        2.01,
+        3.37,
+        2.31
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "62_house.js",
+    "id": "62",
+    "name": "Small House",
+    "prompt": "A small house.",
+    "detail": "simple",
+    "lines": 34,
+    "chars": 1582,
+    "codeTokens": 589,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 8,
+      "triangles": 92,
+      "materials": 6,
+      "uniqueGeometries": 8,
+      "lights": 0,
+      "bbox": [
+        2.3,
+        2.2,
+        1.8
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "63_old_key.js",
+    "id": "63",
+    "name": "Skeleton Key",
+    "prompt": "An old key.",
+    "detail": "simple",
+    "lines": 39,
+    "chars": 1633,
+    "codeTokens": 656,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 8,
+      "triangles": 2852,
+      "materials": 1,
+      "uniqueGeometries": 8,
+      "lights": 0,
+      "bbox": [
+        2.75,
+        0.44,
+        0.98
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "64_street_lamp.js",
+    "id": "64",
+    "name": "Victorian Street Lamp",
+    "prompt": "A Victorian cast-iron street lamp with a lantern head and a fluted post.",
+    "detail": "medium",
+    "lines": 50,
+    "chars": 2541,
+    "codeTokens": 983,
+    "promptTokens": 18,
+    "stats": {
+      "meshes": 11,
+      "triangles": 3168,
+      "materials": 2,
+      "uniqueGeometries": 11,
+      "lights": 1,
+      "bbox": [
+        1.27,
+        4.8,
+        1.27
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "65_sofa.js",
+    "id": "65",
+    "name": "Three-Seat Sofa",
+    "prompt": "A three-seat fabric sofa with rounded arms, seat cushions, and throw pillows.",
+    "detail": "medium",
+    "lines": 57,
+    "chars": 2642,
+    "codeTokens": 1094,
+    "promptTokens": 19,
+    "stats": {
+      "meshes": 16,
+      "triangles": 11560,
+      "materials": 4,
+      "uniqueGeometries": 16,
+      "lights": 0,
+      "bbox": [
+        2.96,
+        1.29,
+        1
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "66_fishbowl.js",
+    "id": "66",
+    "name": "Goldfish Bowl",
+    "prompt": "A round glass fishbowl with water, gravel, a plant, and a goldfish.",
+    "detail": "medium",
+    "lines": 50,
+    "chars": 3070,
+    "codeTokens": 1151,
+    "promptTokens": 18,
+    "stats": {
+      "meshes": 70,
+      "triangles": 7982,
+      "materials": 70,
+      "uniqueGeometries": 70,
+      "lights": 0,
+      "bbox": [
+        2,
+        1.78,
+        2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "67_viking_ship.js",
+    "id": "67",
+    "name": "Viking Longship",
+    "prompt": "A Viking longship with an overlapping clinker-built plank hull, a carved dragon-head prow and curled stern, a single mast with a red-and-white striped square sail, a row of painted round shields along each gunwale, and oars.",
+    "detail": "detailed",
+    "lines": 113,
+    "chars": 5811,
+    "codeTokens": 2130,
+    "promptTokens": 56,
+    "stats": {
+      "meshes": 70,
+      "triangles": 5988,
+      "materials": 41,
+      "uniqueGeometries": 47,
+      "lights": 0,
+      "bbox": [
+        5.39,
+        2.88,
+        4.35
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "68_drum_kit.js",
+    "id": "68",
+    "name": "Drum Kit",
+    "prompt": "A five-piece rock drum kit: a bass drum with a logo head and pedal, a snare on a stand, two rack toms mounted on the bass drum, a floor tom on legs, a hi-hat, and two cymbals on boom stands, all with sparkle-red wraps and chrome hoops.",
+    "detail": "detailed",
+    "lines": 123,
+    "chars": 5481,
+    "codeTokens": 2118,
+    "promptTokens": 68,
+    "stats": {
+      "meshes": 84,
+      "triangles": 7748,
+      "materials": 6,
+      "uniqueGeometries": 84,
+      "lights": 0,
+      "bbox": [
+        2.66,
+        2.05,
+        2.11
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "69_mailbox.js",
+    "id": "69",
+    "name": "Rural Mailbox",
+    "prompt": "A mailbox.",
+    "detail": "simple",
+    "lines": 29,
+    "chars": 1370,
+    "codeTokens": 502,
+    "promptTokens": 3,
+    "stats": {
+      "meshes": 4,
+      "triangles": 236,
+      "materials": 3,
+      "uniqueGeometries": 4,
+      "lights": 0,
+      "bbox": [
+        0.46,
+        1.76,
+        0.8
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "70_skateboard.js",
+    "id": "70",
+    "name": "Skateboard",
+    "prompt": "A skateboard with a concave deck, kicktails, trucks, and colorful wheels.",
+    "detail": "medium",
+    "lines": 49,
+    "chars": 2517,
+    "codeTokens": 942,
+    "promptTokens": 19,
+    "stats": {
+      "meshes": 11,
+      "triangles": 824,
+      "materials": 6,
+      "uniqueGeometries": 11,
+      "lights": 0,
+      "bbox": [
+        2.6,
+        0.74,
+        0.8
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "71_star.js",
+    "id": "71",
+    "name": "Gold Star",
+    "prompt": "A gold star.",
+    "detail": "simple",
+    "lines": 19,
+    "chars": 786,
+    "codeTokens": 301,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 1,
+      "triangles": 116,
+      "materials": 1,
+      "uniqueGeometries": 1,
+      "lights": 0,
+      "bbox": [
+        2.32,
+        2.19,
+        1.2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "72_gem.js",
+    "id": "72",
+    "name": "Cut Gemstone",
+    "prompt": "A blue gemstone.",
+    "detail": "simple",
+    "lines": 13,
+    "chars": 733,
+    "codeTokens": 259,
+    "promptTokens": 5,
+    "stats": {
+      "meshes": 1,
+      "triangles": 128,
+      "materials": 1,
+      "uniqueGeometries": 1,
+      "lights": 0,
+      "bbox": [
+        2,
+        1.25,
+        2
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "73_bucket.js",
+    "id": "73",
+    "name": "Galvanized Bucket",
+    "prompt": "A metal bucket.",
+    "detail": "simple",
+    "lines": 26,
+    "chars": 1058,
+    "codeTokens": 390,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 6,
+      "triangles": 2904,
+      "materials": 1,
+      "uniqueGeometries": 6,
+      "lights": 0,
+      "bbox": [
+        1.57,
+        1.84,
+        1.57
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "74_toaster.js",
+    "id": "74",
+    "name": "Retro Toaster",
+    "prompt": "A retro chrome two-slice toaster with toast popping out.",
+    "detail": "medium",
+    "lines": 43,
+    "chars": 2257,
+    "codeTokens": 830,
+    "promptTokens": 13,
+    "stats": {
+      "meshes": 10,
+      "triangles": 1060,
+      "materials": 6,
+      "uniqueGeometries": 10,
+      "lights": 0,
+      "bbox": [
+        1.87,
+        1.7,
+        1.05
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "75_headphones.js",
+    "id": "75",
+    "name": "Over-Ear Headphones",
+    "prompt": "Over-ear headphones with a padded headband and cushioned ear cups.",
+    "detail": "medium",
+    "lines": 48,
+    "chars": 2188,
+    "codeTokens": 784,
+    "promptTokens": 15,
+    "stats": {
+      "meshes": 12,
+      "triangles": 5000,
+      "materials": 3,
+      "uniqueGeometries": 12,
+      "lights": 0,
+      "bbox": [
+        2.4,
+        2.66,
+        1.96
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "76_excavator.js",
+    "id": "76",
+    "name": "Hydraulic Excavator",
+    "prompt": "A yellow hydraulic excavator on steel crawler tracks, with a rotating cab with windows, a counterweight, and an articulated boom, stick, and toothed bucket driven by hydraulic cylinders, digging pose.",
+    "detail": "detailed",
+    "lines": 121,
+    "chars": 6415,
+    "codeTokens": 2362,
+    "promptTokens": 41,
+    "stats": {
+      "meshes": 70,
+      "triangles": 2968,
+      "materials": 5,
+      "uniqueGeometries": 70,
+      "lights": 0,
+      "bbox": [
+        4.72,
+        3.09,
+        2.59
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "77_carousel.js",
+    "id": "77",
+    "name": "Carousel",
+    "prompt": "A fairground carousel with a striped conical canopy with scalloped valance, a central mirrored column, twisted brass poles, eight horses at alternating heights, a round wooden platform, and bulbs around the canopy edge.",
+    "detail": "detailed",
+    "lines": 88,
+    "chars": 4825,
+    "codeTokens": 1758,
+    "promptTokens": 46,
+    "stats": {
+      "meshes": 164,
+      "triangles": 30720,
+      "materials": 53,
+      "uniqueGeometries": 117,
+      "lights": 0,
+      "bbox": [
+        4.51,
+        3.56,
+        4.51
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "78_ice_cream.js",
+    "id": "78",
+    "name": "Ice Cream Cone",
+    "prompt": "An ice cream cone.",
+    "detail": "simple",
+    "lines": 34,
+    "chars": 1571,
+    "codeTokens": 587,
+    "promptTokens": 5,
+    "stats": {
+      "meshes": 3,
+      "triangles": 4096,
+      "materials": 3,
+      "uniqueGeometries": 3,
+      "lights": 0,
+      "bbox": [
+        1.04,
+        3,
+        1.04
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "79_picnic_table.js",
+    "id": "79",
+    "name": "Picnic Table",
+    "prompt": "A wooden picnic table with attached benches and a checkered tablecloth.",
+    "detail": "medium",
+    "lines": 53,
+    "chars": 2373,
+    "codeTokens": 856,
+    "promptTokens": 14,
+    "stats": {
+      "meshes": 16,
+      "triangles": 1764,
+      "materials": 2,
+      "uniqueGeometries": 16,
+      "lights": 0,
+      "bbox": [
+        2.6,
+        1.02,
+        2.12
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "80_trophy.js",
+    "id": "80",
+    "name": "Trophy Cup",
+    "prompt": "A gold trophy cup with two handles on a marble base.",
+    "detail": "medium",
+    "lines": 39,
+    "chars": 2129,
+    "codeTokens": 833,
+    "promptTokens": 12,
+    "stats": {
+      "meshes": 6,
+      "triangles": 5618,
+      "materials": 3,
+      "uniqueGeometries": 6,
+      "lights": 0,
+      "bbox": [
+        1.8,
+        1.92,
+        1.1
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "81_cloud.js",
+    "id": "81",
+    "name": "Puffy Cloud",
+    "prompt": "A cloud.",
+    "detail": "simple",
+    "lines": 19,
+    "chars": 778,
+    "codeTokens": 335,
+    "promptTokens": 3,
+    "stats": {
+      "meshes": 8,
+      "triangles": 8640,
+      "materials": 1,
+      "uniqueGeometries": 8,
+      "lights": 0,
+      "bbox": [
+        3.43,
+        1.8,
+        1.6
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "82_mushroom_house.js",
+    "id": "82",
+    "name": "Mushroom House",
+    "prompt": "A fairy-tale mushroom house with a round door, windows, and a chimney.",
+    "detail": "medium",
+    "lines": 52,
+    "chars": 2746,
+    "codeTokens": 1041,
+    "promptTokens": 19,
+    "stats": {
+      "meshes": 19,
+      "triangles": 6040,
+      "materials": 7,
+      "uniqueGeometries": 19,
+      "lights": 0,
+      "bbox": [
+        3,
+        2.76,
+        3
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "83_biplane.js",
+    "id": "83",
+    "name": "Vintage Biplane",
+    "prompt": "A 1930s biplane with fabric-covered upper and lower wings joined by struts and bracing wires, an open cockpit with a windscreen, a radial engine with a two-blade wooden propeller, a tail with rudder and elevators, and fixed landing gear with spoked wheels.",
+    "detail": "detailed",
+    "lines": 118,
+    "chars": 6180,
+    "codeTokens": 2295,
+    "promptTokens": 61,
+    "stats": {
+      "meshes": 83,
+      "triangles": 4498,
+      "materials": 34,
+      "uniqueGeometries": 83,
+      "lights": 0,
+      "bbox": [
+        3.72,
+        1.91,
+        4.95
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "84_vase.js",
+    "id": "84",
+    "name": "Ceramic Vase",
+    "prompt": "A vase.",
+    "detail": "simple",
+    "lines": 21,
+    "chars": 1045,
+    "codeTokens": 400,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 1,
+      "triangles": 5248,
+      "materials": 1,
+      "uniqueGeometries": 1,
+      "lights": 0,
+      "bbox": [
+        1.38,
+        2.2,
+        1.38
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "85_watering_can.js",
+    "id": "85",
+    "name": "Watering Can",
+    "prompt": "A green metal watering can with a long spout and a sprinkler rose.",
+    "detail": "medium",
+    "lines": 50,
+    "chars": 2702,
+    "codeTokens": 1011,
+    "promptTokens": 17,
+    "stats": {
+      "meshes": 25,
+      "triangles": 1468,
+      "materials": 20,
+      "uniqueGeometries": 25,
+      "lights": 0,
+      "bbox": [
+        2.51,
+        1.59,
+        0.99
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "86_stone_bridge.js",
+    "id": "86",
+    "name": "Stone Arch Bridge",
+    "prompt": "A medieval stone arch bridge with three semicircular arches of individual voussoir stones, cutwater piers, a paved deck, and low parapet walls, spanning a stream.",
+    "detail": "detailed",
+    "lines": 73,
+    "chars": 4015,
+    "codeTokens": 1477,
+    "promptTokens": 38,
+    "stats": {
+      "meshes": 178,
+      "triangles": 3294,
+      "materials": 172,
+      "uniqueGeometries": 178,
+      "lights": 0,
+      "bbox": [
+        6.6,
+        3.1,
+        3
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "87_toy_blocks.js",
+    "id": "87",
+    "name": "Toy Blocks",
+    "prompt": "Toy blocks.",
+    "detail": "simple",
+    "lines": 31,
+    "chars": 1722,
+    "codeTokens": 716,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 36,
+      "triangles": 912,
+      "materials": 12,
+      "uniqueGeometries": 36,
+      "lights": 0,
+      "bbox": [
+        2.58,
+        1.88,
+        1.58
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "88_sewing_machine.js",
+    "id": "88",
+    "name": "Antique Sewing Machine",
+    "prompt": "An antique black cast-iron sewing machine with gold decals, a curved arm and head, a hand wheel, a needle bar and presser foot above a chrome bed plate, a thread spool on a pin, mounted on a wooden base.",
+    "detail": "detailed",
+    "lines": 91,
+    "chars": 4993,
+    "codeTokens": 1875,
+    "promptTokens": 50,
+    "stats": {
+      "meshes": 24,
+      "triangles": 3644,
+      "materials": 5,
+      "uniqueGeometries": 24,
+      "lights": 0,
+      "bbox": [
+        3.05,
+        1.75,
+        1.3
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "89_bell.js",
+    "id": "89",
+    "name": "Bronze Bell",
+    "prompt": "A bell.",
+    "detail": "simple",
+    "lines": 22,
+    "chars": 1134,
+    "codeTokens": 426,
+    "promptTokens": 3,
+    "stats": {
+      "meshes": 4,
+      "triangles": 3176,
+      "materials": 2,
+      "uniqueGeometries": 4,
+      "lights": 0,
+      "bbox": [
+        1.96,
+        1.98,
+        1.96
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "90_kite.js",
+    "id": "90",
+    "name": "Diamond Kite",
+    "prompt": "A kite.",
+    "detail": "simple",
+    "lines": 36,
+    "chars": 1812,
+    "codeTokens": 688,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 10,
+      "triangles": 76,
+      "materials": 10,
+      "uniqueGeometries": 10,
+      "lights": 0,
+      "bbox": [
+        1.81,
+        3.36,
+        0.76
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "91_snail.js",
+    "id": "91",
+    "name": "Garden Snail",
+    "prompt": "A garden snail with a spiral shell and eye stalks.",
+    "detail": "medium",
+    "lines": 51,
+    "chars": 2568,
+    "codeTokens": 982,
+    "promptTokens": 13,
+    "stats": {
+      "meshes": 8,
+      "triangles": 5568,
+      "materials": 4,
+      "uniqueGeometries": 8,
+      "lights": 0,
+      "bbox": [
+        1.93,
+        1.3,
+        0.62
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "92_robot_vacuum.js",
+    "id": "92",
+    "name": "Robot Vacuum",
+    "prompt": "A robot vacuum.",
+    "detail": "simple",
+    "lines": 28,
+    "chars": 1444,
+    "codeTokens": 542,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 7,
+      "triangles": 644,
+      "materials": 7,
+      "uniqueGeometries": 7,
+      "lights": 0,
+      "bbox": [
+        2.06,
+        0.42,
+        2.01
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "93_water_tower.js",
+    "id": "93",
+    "name": "Rooftop Water Tower",
+    "prompt": "A rooftop wooden water tower on a steel stand with a conical roof and a ladder.",
+    "detail": "medium",
+    "lines": 70,
+    "chars": 3276,
+    "codeTokens": 1258,
+    "promptTokens": 20,
+    "stats": {
+      "meshes": 65,
+      "triangles": 4148,
+      "materials": 31,
+      "uniqueGeometries": 65,
+      "lights": 0,
+      "bbox": [
+        2.6,
+        3.94,
+        2.6
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "94_typewriter.js",
+    "id": "94",
+    "name": "Manual Typewriter",
+    "prompt": "A 1920s manual typewriter in black enamel: four staggered rows of round glass-topped keys with chrome rims, a semicircular basket of typebars, a platen roller with knobs and a sheet of paper, a carriage return lever, and gold lettering.",
+    "detail": "detailed",
+    "lines": 85,
+    "chars": 4651,
+    "codeTokens": 1680,
+    "promptTokens": 57,
+    "stats": {
+      "meshes": 200,
+      "triangles": 13774,
+      "materials": 7,
+      "uniqueGeometries": 92,
+      "lights": 0,
+      "bbox": [
+        2.46,
+        1.92,
+        1.74
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "95_igloo.js",
+    "id": "95",
+    "name": "Igloo",
+    "prompt": "An igloo.",
+    "detail": "simple",
+    "lines": 40,
+    "chars": 2141,
+    "codeTokens": 796,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 83,
+      "triangles": 1288,
+      "materials": 83,
+      "uniqueGeometries": 83,
+      "lights": 0,
+      "bbox": [
+        4.6,
+        1.44,
+        4.6
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "96_tent.js",
+    "id": "96",
+    "name": "Camping Tent",
+    "prompt": "A camping tent.",
+    "detail": "simple",
+    "lines": 35,
+    "chars": 1944,
+    "codeTokens": 689,
+    "promptTokens": 4,
+    "stats": {
+      "meshes": 6,
+      "triangles": 103,
+      "materials": 6,
+      "uniqueGeometries": 6,
+      "lights": 0,
+      "bbox": [
+        4.8,
+        1.4,
+        4.8
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "97_submarine.js",
+    "id": "97",
+    "name": "Yellow Submarine",
+    "prompt": "A yellow cartoon submarine with portholes, a periscope, and a propeller.",
+    "detail": "medium",
+    "lines": 59,
+    "chars": 2728,
+    "codeTokens": 1038,
+    "promptTokens": 18,
+    "stats": {
+      "meshes": 24,
+      "triangles": 6704,
+      "materials": 10,
+      "uniqueGeometries": 24,
+      "lights": 0,
+      "bbox": [
+        3.33,
+        2.24,
+        1.4
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "98_treehouse.js",
+    "id": "98",
+    "name": "Oak Treehouse",
+    "prompt": "A treehouse built into a large oak: a thick trunk with branching limbs and leafy canopy clusters, a plank platform with railings resting on the branches, a small cabin with a shingled roof and a window, a rope ladder hanging to the ground, and a tire swing on another branch.",
+    "detail": "detailed",
+    "lines": 90,
+    "chars": 5230,
+    "codeTokens": 2018,
+    "promptTokens": 61,
+    "stats": {
+      "meshes": 91,
+      "triangles": 4118,
+      "materials": 42,
+      "uniqueGeometries": 91,
+      "lights": 0,
+      "bbox": [
+        4.93,
+        5.56,
+        4.89
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "99_pumpkin.js",
+    "id": "99",
+    "name": "Pumpkin",
+    "prompt": "A pumpkin.",
+    "detail": "simple",
+    "lines": 26,
+    "chars": 1121,
+    "codeTokens": 418,
+    "promptTokens": 3,
+    "stats": {
+      "meshes": 2,
+      "triangles": 5016,
+      "materials": 2,
+      "uniqueGeometries": 2,
+      "lights": 0,
+      "bbox": [
+        2.3,
+        1.75,
+        2.16
+      ]
+    },
+    "errors": []
+  },
+  {
+    "file": "100_gramophone.js",
+    "id": "100",
+    "name": "Gramophone",
+    "prompt": "An antique gramophone: a square mahogany cabinet with a side winding crank, a turntable with a black shellac record showing grooves and a red label, a curved tonearm with a soundbox and needle, and a large flared brass horn.",
+    "detail": "detailed",
+    "lines": 81,
+    "chars": 4944,
+    "codeTokens": 1850,
+    "promptTokens": 55,
+    "stats": {
+      "meshes": 30,
+      "triangles": 6884,
+      "materials": 19,
+      "uniqueGeometries": 30,
+      "lights": 0,
+      "bbox": [
+        2.2,
+        2.97,
+        2.2
+      ]
+    },
+    "errors": []
+  }
+]

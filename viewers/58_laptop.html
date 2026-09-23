@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Open Laptop</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>58 · Open Laptop</b><br>An open laptop with a keyboard, trackpad, and a glowing screen.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 58: "An open laptop with a keyboard, trackpad, and a glowing screen."
+const meta = { id: '58', name: 'Open Laptop', prompt: 'An open laptop with a keyboard, trackpad, and a glowing screen.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const alu = new THREE.MeshStandardMaterial({ color: 0xb9bcc2, metalness: 0.9, roughness: 0.3 });
+  const keyMat = new THREE.MeshStandardMaterial({ color: 0x222326, roughness: 0.6 });
+  const W = 2.4, D = 1.6;
+  const base = new THREE.Mesh(new THREE.BoxGeometry(W, 0.08, D), alu);
+  base.position.y = 0.04;
+  root.add(base);
+  // Keyboard: 5 rows x 14 keys, plus spacebar
+  const kw = 0.13, gap = 0.02;
+  const keyGeo = new THREE.BoxGeometry(kw, 0.02, kw);
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 14; c++) {
+    const k = new THREE.Mesh(keyGeo, keyMat);
+    k.position.set(-((14 * (kw + gap)) / 2) + (kw + gap) * (c + 0.5), 0.09, -0.62 + r * (kw + gap));
+    root.add(k);
+  }
+  const space = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.02, kw), keyMat);
+  space.position.set(0, 0.09, -0.62 + 5 * (kw + gap));
+  root.add(space);
+  const pad = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.005, 0.45), new THREE.MeshStandardMaterial({ color: 0xa6a9ae, metalness: 0.6, roughness: 0.2 }));
+  pad.position.set(0, 0.082, 0.5);
+  root.add(pad);
+  // Lid hinged at the back edge, opened ~105°
+  const hinge = new THREE.Group();
+  hinge.position.set(0, 0.08, -D / 2);
+  hinge.rotation.x = -0.28;
+  root.add(hinge);
+  const lid = new THREE.Mesh(new THREE.BoxGeometry(W, D, 0.05), alu);
+  lid.position.set(0, D / 2, -0.025);
+  hinge.add(lid);
+  const bezel = new THREE.Mesh(new THREE.PlaneGeometry(W - 0.1, D - 0.1), new THREE.MeshStandardMaterial({ color: 0x0c0c0e }));
+  bezel.position.set(0, D / 2, 0.001);
+  hinge.add(bezel);
+  // Screen with a simple gradient "wallpaper" via vertex colors
+  const sg = new THREE.PlaneGeometry(W - 0.25, D - 0.3, 1, 8);
+  const cols = [], p = sg.attributes.position;
+  for (let i = 0; i < p.count; i++) { const t = (p.getY(i) + (D - 0.3) / 2) / (D - 0.3); const c = new THREE.Color(0x1e3c72).lerp(new THREE.Color(0x7fd3e8), t); cols.push(c.r, c.g, c.b); }
+  sg.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+  const screen = new THREE.Mesh(sg, new THREE.MeshBasicMaterial({ vertexColors: true }));
+  screen.position.set(0, D / 2 + 0.03, 0.003);
+  hinge.add(screen);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

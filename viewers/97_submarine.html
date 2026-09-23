@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Yellow Submarine</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>97 · Yellow Submarine</b><br>A yellow cartoon submarine with portholes, a periscope, and a propeller.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 97: "A yellow cartoon submarine with portholes, a periscope, and a propeller."
+const meta = { id: '97', name: 'Yellow Submarine', prompt: 'A yellow cartoon submarine with portholes, a periscope, and a propeller.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const yellow = new THREE.MeshPhysicalMaterial({ color: 0xf6c11b, roughness: 0.35, clearcoat: 0.6 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0x8a8f96, metalness: 0.9, roughness: 0.3 });
+  const Y = 1.0;
+  // Hull: lathe with a round nose and tapered tail, laid along x
+  const prof = [];
+  for (let i = 0; i <= 30; i++) {
+    const t = i / 30;
+    const r = t < 0.2 ? 0.7 * Math.sqrt(1 - Math.pow(1 - t / 0.2, 2)) : 0.7 * (1 - Math.pow((t - 0.2) / 0.8, 2) * 0.75);
+    prof.push(new THREE.Vector2(Math.max(r, 0.001), t * 3.2));
+  }
+  const hull = new THREE.Mesh(new THREE.LatheGeometry(prof, 40), yellow);
+  hull.rotation.z = -Math.PI / 2;
+  hull.position.set(-1.6, Y, 0);
+  root.add(hull);
+  // Conning tower + periscope
+  const tower = new THREE.Mesh(new THREE.CapsuleGeometry(0.28, 0.4, 6, 16), yellow);
+  tower.rotation.z = Math.PI / 2;
+  tower.scale.set(1.3, 1, 0.8);
+  tower.position.set(-0.4, Y + 0.72, 0);
+  root.add(tower);
+  const scope = new THREE.CatmullRomCurve3([new THREE.Vector3(-0.3, Y + 0.9, 0), new THREE.Vector3(-0.3, Y + 1.45, 0), new THREE.Vector3(-0.15, Y + 1.5, 0)]);
+  root.add(new THREE.Mesh(new THREE.TubeGeometry(scope, 16, 0.04, 8), metal));
+  // Portholes along both sides
+  for (const z of [-1, 1]) for (let i = 0; i < 4; i++) {
+    const x = -1.0 + i * 0.5;
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.03, 8, 20), metal);
+    const zz = z * 0.66;
+    ring.position.set(x, Y + 0.08, zz);
+    root.add(ring);
+    const glass = new THREE.Mesh(new THREE.CircleGeometry(0.1, 20), new THREE.MeshStandardMaterial({ color: 0x7fd0f0, emissive: 0x2a7fa0, emissiveIntensity: 0.4 }));
+    glass.position.set(x, Y + 0.08, zz + z * 0.01);
+    if (z < 0) glass.rotation.y = Math.PI;
+    root.add(glass);
+  }
+  // Tail fins + propeller
+  for (const [rx, ry] of [[0, 0], [Math.PI / 2, 0]]) {
+    const fin = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.04, 0.9), yellow);
+    fin.rotation.x = rx;
+    fin.position.set(1.35, Y, 0);
+    root.add(fin);
+  }
+  const prop = new THREE.Group();
+  prop.position.set(1.7, Y, 0);
+  root.add(prop);
+  for (let k = 0; k < 3; k++) {
+    const b = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 8), metal);
+    b.scale.set(0.15, 1, 0.45);
+    b.position.set(0, Math.cos((k / 3) * Math.PI * 2) * 0.2, Math.sin((k / 3) * Math.PI * 2) * 0.2);
+    b.rotation.x = (k / 3) * Math.PI * 2;
+    prop.add(b);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Dutch Windmill</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>12 · Dutch Windmill</b><br>A Dutch windmill with an octagonal tapered tower, a thatched cap, four lattice sails, and a wraparound balcony.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 12: "A Dutch windmill with an octagonal tapered tower, a thatched cap, four lattice sails, and a wraparound balcony."
+const meta = { id: '12', name: 'Dutch Windmill', prompt: 'A Dutch windmill with an octagonal tapered tower, a thatched cap, four lattice sails, and a wraparound balcony.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const brick = new THREE.MeshStandardMaterial({ color: 0x7d3b2b, roughness: 0.9, flatShading: true });
+  const board = new THREE.MeshStandardMaterial({ color: 0x3e5a4a, roughness: 0.8, flatShading: true });
+  const thatch = new THREE.MeshStandardMaterial({ color: 0xa88a52, roughness: 1, flatShading: true });
+  const wood = new THREE.MeshStandardMaterial({ color: 0xe8e1d0, roughness: 0.7 });
+  const sailCloth = new THREE.MeshStandardMaterial({ color: 0xf4efe2, roughness: 0.9, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
+
+  // Octagonal tower: brick base + tapered boarded upper
+  const base = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.3, 1.0, 8), brick);
+  base.position.y = 0.5;
+  root.add(base);
+  const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 1.15, 2.8, 8), board);
+  tower.position.y = 1.0 + 1.4;
+  root.add(tower);
+
+  // Balcony (stage) at the base/tower join
+  const deck = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 0.06, 8), wood);
+  deck.position.y = 1.05;
+  root.add(deck);
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2;
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.35, 0.04), wood);
+    p.position.set(Math.cos(a) * 1.55, 1.25, Math.sin(a) * 1.55);
+    root.add(p);
+  }
+  const rail = new THREE.Mesh(new THREE.TorusGeometry(1.55, 0.02, 4, 8), wood);
+  rail.rotation.set(Math.PI / 2, 0, Math.PI / 8);
+  rail.position.y = 1.42;
+  root.add(rail);
+
+  // Thatched cap
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(0.9, 0.9, 8), thatch);
+  cap.position.y = 3.8 + 0.45;
+  root.add(cap);
+
+  // Sails on a hub, tilted slightly back
+  const hub = new THREE.Group();
+  hub.position.set(0, 3.95, 0.85);
+  hub.rotation.set(-0.1, 0, 0.35);
+  root.add(hub);
+  const axle = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.4, 12), wood);
+  axle.rotation.x = Math.PI / 2;
+  hub.add(axle);
+  for (let k = 0; k < 4; k++) {
+    const arm = new THREE.Group();
+    arm.rotation.z = k * Math.PI / 2;
+    hub.add(arm);
+    const stock = new THREE.Mesh(new THREE.BoxGeometry(0.08, 2.4, 0.06), wood);
+    stock.position.y = 1.25;
+    arm.add(stock);
+    // lattice: crossbars + cloth
+    for (let j = 0; j < 8; j++) {
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.025, 0.025), wood);
+      bar.position.set(0.3, 0.4 + j * 0.27, 0.03);
+      arm.add(bar);
+    }
+    const sail = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 1.9), sailCloth);
+    sail.position.set(0.3, 1.35, 0.05);
+    arm.add(sail);
+  }
+
+  // Door
+  const door = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.7, 0.05), wood);
+  door.position.set(0, 0.35, 1.26);
+  root.add(door);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

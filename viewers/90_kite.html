@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Diamond Kite</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>90 · Diamond Kite</b><br>A kite.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 90: "A kite."
+const meta = { id: '90', name: 'Diamond Kite', prompt: 'A kite.', detail: 'simple' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const cols = [0xe63946, 0xf1c40f, 0x2a9d8f, 0x1d3557];
+  const top = new THREE.Vector3(0, 2.6, 0), bottom = new THREE.Vector3(0, 0.9, 0), l = new THREE.Vector3(-0.7, 2.1, 0), r = new THREE.Vector3(0.7, 2.1, 0), c = new THREE.Vector3(0, 2.1, 0.08);
+  // Four triangular sail panels
+  [[top, l], [top, r], [bottom, l], [bottom, r]].forEach(([a, b], i) => {
+    const g = new THREE.BufferGeometry().setFromPoints([a, b, c]);
+    g.computeVertexNormals();
+    root.add(new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: cols[i], roughness: 0.7, side: THREE.DoubleSide })));
+  });
+  const stick = (a, b) => {
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, a.distanceTo(b), 6), new THREE.MeshStandardMaterial({ color: 0x8a5a2b }));
+    m.position.copy(a).lerp(b, 0.5);
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+    root.add(m);
+  };
+  stick(top, bottom); stick(l, r);
+  // Tail: wavy string with bows
+  const pts = [];
+  for (let i = 0; i <= 30; i++) { const t = i / 30; pts.push(new THREE.Vector3(Math.sin(t * 8) * 0.2 * t + t * 0.4, 0.9 - t * 1.6, Math.cos(t * 5) * 0.1)); }
+  root.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: 0x333333 })));
+  for (let k = 1; k < 5; k++) {
+    const p = pts[k * 6];
+    const bow = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.18, 3), new THREE.MeshStandardMaterial({ color: cols[k % 4] }));
+    bow.position.copy(p);
+    bow.rotation.z = Math.PI / 2;
+    root.add(bow);
+  }
+  root.rotation.set(-0.15, 0.4, 0.2);
+  root.position.y = 0.8;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

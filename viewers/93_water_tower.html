@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Rooftop Water Tower</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>93 · Rooftop Water Tower</b><br>A rooftop wooden water tower on a steel stand with a conical roof and a ladder.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 93: "A rooftop wooden water tower on a steel stand with a conical roof and a ladder."
+const meta = { id: '93', name: 'Rooftop Water Tower', prompt: 'A rooftop wooden water tower on a steel stand with a conical roof and a ladder.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const steel = new THREE.MeshStandardMaterial({ color: 0x3b3f44, metalness: 0.7, roughness: 0.5 });
+  const rng = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(93);
+  const tankY = 1.6, R = 0.9, H = 1.4;
+  // Steel stand: 4 legs + cross bracing + platform
+  const legs = [[-0.7, -0.7], [0.7, -0.7], [0.7, 0.7], [-0.7, 0.7]];
+  for (const [x, z] of legs) {
+    const l = new THREE.Mesh(new THREE.BoxGeometry(0.08, tankY, 0.08), steel);
+    l.position.set(x, tankY / 2, z);
+    root.add(l);
+  }
+  for (let i = 0; i < 4; i++) {
+    const [x0, z0] = legs[i], [x1, z1] = legs[(i + 1) % 4];
+    for (const [ya, yb] of [[0.1, tankY - 0.1], [tankY - 0.1, 0.1]]) {
+      const a = new THREE.Vector3(x0, ya, z0), b = new THREE.Vector3(x1, yb, z1);
+      const br = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, a.distanceTo(b), 4), steel);
+      br.position.copy(a).lerp(b, 0.5);
+      br.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize());
+      root.add(br);
+    }
+  }
+  const platform = new THREE.Mesh(new THREE.CylinderGeometry(R + 0.15, R + 0.15, 0.08, 32), steel);
+  platform.position.y = tankY;
+  root.add(platform);
+  // Wooden tank: vertical staves with iron hoops
+  const staves = 28;
+  for (let i = 0; i < staves; i++) {
+    const a = (i / staves) * Math.PI * 2;
+    const s = new THREE.Mesh(new THREE.BoxGeometry(0.2, H, 0.06), new THREE.MeshStandardMaterial({ color: new THREE.Color(0x8a6a4a).offsetHSL(0, 0, (rng() - 0.5) * 0.06), roughness: 0.95 }));
+    s.position.set(Math.cos(a) * R, tankY + H / 2 + 0.04, Math.sin(a) * R);
+    s.rotation.y = -a + Math.PI / 2;
+    root.add(s);
+  }
+  for (let k = 0; k < 5; k++) {
+    const hoop = new THREE.Mesh(new THREE.TorusGeometry(R + 0.04, 0.015, 6, 48), steel);
+    hoop.rotation.x = Math.PI / 2;
+    hoop.position.y = tankY + 0.15 + k * 0.28;
+    root.add(hoop);
+  }
+  // Conical roof with finial
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(R + 0.12, 0.7, 32), new THREE.MeshStandardMaterial({ color: 0x5a4632, roughness: 0.9 }));
+  roof.position.y = tankY + H + 0.39;
+  root.add(roof);
+  const fin = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 8), steel);
+  fin.position.y = tankY + H + 0.78;
+  root.add(fin);
+  // Ladder up the side
+  const lx = R + 0.18;
+  for (const z of [-0.15, 0.15]) {
+    const rail = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, tankY + H, 6), steel);
+    rail.position.set(lx, (tankY + H) / 2, z);
+    root.add(rail);
+  }
+  for (let y = 0.2; y < tankY + H; y += 0.2) {
+    const rung = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.3, 6), steel);
+    rung.rotation.x = Math.PI / 2;
+    rung.position.set(lx, y, 0);
+    root.add(rung);
+  }
+  // Rooftop slab it stands on
+  const slab = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.1, 2.6), new THREE.MeshStandardMaterial({ color: 0x7d7a74, roughness: 1 }));
+  slab.position.y = -0.05;
+  root.add(slab);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

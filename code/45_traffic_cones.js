@@ -1,0 +1,72 @@
+// Prompt 45: "Three orange traffic cones with white reflective bands on square black bases, one knocked over, next to a striped road barrier on A-frame legs."
+export const meta = { id: '45', name: 'Traffic Cones & Barrier', prompt: 'Three orange traffic cones with white reflective bands on square black bases, one knocked over, next to a striped road barrier on A-frame legs.' };
+
+export function build(THREE) {
+  const root = new THREE.Group();
+  const orange = new THREE.MeshStandardMaterial({ color: 0xff6a13, roughness: 0.55 });
+  const white = new THREE.MeshStandardMaterial({ color: 0xf5f5f5, roughness: 0.3, metalness: 0.2 });
+  const black = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.8 });
+  const asphalt = new THREE.MeshStandardMaterial({ color: 0x55575a, roughness: 1 });
+
+  const ground = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.06, 2.6), asphalt);
+  ground.position.y = -0.03;
+  root.add(ground);
+
+  function cone() {
+    const g = new THREE.Group();
+    const base = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.05, 0.55), black);
+    base.position.y = 0.025;
+    g.add(base);
+    const H = 0.9, r0 = 0.2, r1 = 0.035;
+    const body = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, H, 32, 1, true), orange);
+    body.material = orange.clone(); body.material.side = THREE.DoubleSide;
+    body.position.y = 0.05 + H / 2;
+    g.add(body);
+    // reflective bands: short frustums matching the cone slope
+    for (const [t0, t1] of [[0.45, 0.58], [0.68, 0.76]]) {
+      const ra = r0 + (r1 - r0) * t0, rb = r0 + (r1 - r0) * t1;
+      const band = new THREE.Mesh(new THREE.CylinderGeometry(rb + 0.003, ra + 0.003, (t1 - t0) * H, 32, 1, true), white);
+      band.position.y = 0.05 + H * (t0 + t1) / 2;
+      g.add(band);
+    }
+    return g;
+  }
+  const placements = [[-1.4, 0.5, 0, 0], [-0.7, 0.75, 0, 0.3], [-1.0, -0.35, 1, 0.8]];
+  for (const [x, z, fallen, rot] of placements) {
+    const c = cone();
+    c.position.set(x, 0, z);
+    c.rotation.y = rot;
+    if (fallen) { c.rotation.z = Math.PI / 2 - 0.22; c.position.y = 0.28; }
+    root.add(c);
+  }
+
+  // Barrier: striped board built from alternating diagonal segments clipped into a rectangle
+  const barrier = new THREE.Group();
+  barrier.position.set(0.9, 0, 0);
+  barrier.rotation.y = -0.25;
+  root.add(barrier);
+  const bw = 2.0, bh = 0.28, y = 0.8;
+  const stripes = 8;
+  for (let i = 0; i < stripes; i++) {
+    const seg = new THREE.Mesh(new THREE.BoxGeometry(bw / stripes, bh, 0.04), i % 2 ? white : new THREE.MeshStandardMaterial({ color: 0xd62828, roughness: 0.5 }));
+    seg.position.set(-bw / 2 + (i + 0.5) * (bw / stripes), y, 0);
+    barrier.add(seg);
+  }
+  // A-frame legs
+  for (const x of [-0.8, 0.8]) {
+    for (const s of [-1, 1]) {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.06, 1.0, 0.05), black);
+      leg.position.set(x, 0.48, s * 0.18);
+      leg.rotation.x = s * 0.35;
+      barrier.add(leg);
+    }
+    const foot = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.04, 0.8), black);
+    foot.position.set(x, 0.02, 0);
+    barrier.add(foot);
+  }
+  // Warning lamp on top
+  const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.1, 20), new THREE.MeshStandardMaterial({ color: 0xffb000, emissive: 0xff8c00, emissiveIntensity: 1.5 }));
+  lamp.position.set(-0.8, y + bh / 2 + 0.08, 0);
+  barrier.add(lamp);
+  return root;
+}

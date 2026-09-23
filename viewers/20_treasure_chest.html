@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Treasure Chest</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>20 · Treasure Chest</b><br>A pirate treasure chest with a half-cylinder lid propped open, iron bands and rivets, a padlock hasp, and gold coins spilling out.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 20: "A pirate treasure chest with a half-cylinder lid propped open, iron bands and rivets, a padlock hasp, and gold coins spilling out."
+const meta = { id: '20', name: 'Treasure Chest', prompt: 'A pirate treasure chest with a half-cylinder lid propped open, iron bands and rivets, a padlock hasp, and gold coins spilling out.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0x7a4a26, roughness: 0.85 });
+  const iron = new THREE.MeshStandardMaterial({ color: 0x3b3b3b, metalness: 0.8, roughness: 0.45 });
+  const gold = new THREE.MeshStandardMaterial({ color: 0xf2c14e, metalness: 1, roughness: 0.25, emissive: 0x3a2800 });
+  const W = 2.0, D = 1.2, H = 0.9;
+  const rng = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(99);
+
+  // Box body (open top) built from 5 slabs
+  const t = 0.08;
+  const slab = (w, h, d, x, y, z) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), wood); m.position.set(x, y, z); root.add(m); };
+  slab(W, t, D, 0, t / 2, 0);
+  slab(W, H, t, 0, H / 2, D / 2 - t / 2);
+  slab(W, H, t, 0, H / 2, -D / 2 + t / 2);
+  slab(t, H, D, W / 2 - t / 2, H / 2, 0);
+  slab(t, H, D, -W / 2 + t / 2, H / 2, 0);
+
+  // Iron bands wrapping the body, with rivets
+  for (const x of [-0.7, 0, 0.7]) {
+    const band = new THREE.Mesh(new THREE.BoxGeometry(0.12, H + 0.01, D + 0.02), iron);
+    band.position.set(x, H / 2, 0);
+    root.add(band);
+    for (const y of [0.15, 0.45, 0.75]) {
+      const rv = new THREE.Mesh(new THREE.SphereGeometry(0.025, 8, 6), iron);
+      rv.position.set(x, y, D / 2 + 0.015);
+      root.add(rv);
+    }
+  }
+
+  // Lid: half-cylinder shell hinged at the back edge, opened ~110°
+  const hinge = new THREE.Group();
+  hinge.position.set(0, H, -D / 2);
+  hinge.rotation.x = -1.9;
+  root.add(hinge);
+  const lid = new THREE.Mesh(new THREE.CylinderGeometry(D / 2, D / 2, W, 24, 1, true, 0, Math.PI), wood);
+  lid.material = wood.clone(); lid.material.side = THREE.DoubleSide;
+  lid.rotation.z = Math.PI / 2;
+  lid.position.z = D / 2;
+  hinge.add(lid);
+  for (const x of [-0.7, 0, 0.7]) {
+    const b = new THREE.Mesh(new THREE.CylinderGeometry(D / 2 + 0.01, D / 2 + 0.01, 0.12, 24, 1, true, 0, Math.PI), iron);
+    b.material = iron.clone(); b.material.side = THREE.DoubleSide;
+    b.rotation.z = Math.PI / 2;
+    b.position.set(x, 0, D / 2);
+    hinge.add(b);
+  }
+
+  // Hasp + padlock hanging on the front
+  const hasp = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.26, 0.03), iron);
+  hasp.position.set(0, H - 0.12, D / 2 + 0.03);
+  root.add(hasp);
+  const lock = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.16, 0.08), gold);
+  lock.position.set(0, H - 0.34, D / 2 + 0.06);
+  root.add(lock);
+  const shackle = new THREE.Mesh(new THREE.TorusGeometry(0.06, 0.015, 8, 16, Math.PI), iron);
+  shackle.position.set(0, H - 0.26, D / 2 + 0.06);
+  root.add(shackle);
+
+  // Coins: a heaped pile inside plus a spill in front (shared geometry)
+  const coinGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.015, 16);
+  const coin = (x, y, z) => { const c = new THREE.Mesh(coinGeo, gold); c.position.set(x, y, z); c.rotation.set((rng() - 0.5) * 1.2, rng() * 3, (rng() - 0.5) * 1.2); root.add(c); };
+  for (let i = 0; i < 140; i++) {
+    const x = (rng() - 0.5) * (W - 0.25), z = (rng() - 0.5) * (D - 0.25);
+    const heap = 0.25 * (1 - (x * x) / 1.0 - (z * z) / 0.4);
+    coin(x, H - 0.05 + Math.max(0, heap) * rng(), z);
+  }
+  for (let i = 0; i < 30; i++) {
+    const a = rng() * Math.PI - Math.PI, r = 0.2 + rng() * 0.6;
+    coin(Math.cos(a) * r * 1.3, 0.01, D / 2 + 0.15 + Math.abs(Math.sin(a)) * r * 0.5);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

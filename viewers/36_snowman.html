@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Snowman</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>36 · Snowman</b><br>A three-ball snowman with a carrot nose, coal eyes and buttons, stick arms, a knitted striped scarf, and a black top hat, standing on a snowy mound.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 36: "A three-ball snowman with a carrot nose, coal eyes and buttons, stick arms, a knitted striped scarf, and a black top hat, standing on a snowy mound."
+const meta = { id: '36', name: 'Snowman', prompt: 'A three-ball snowman with a carrot nose, coal eyes and buttons, stick arms, a knitted striped scarf, and a black top hat, standing on a snowy mound.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const snow = new THREE.MeshStandardMaterial({ color: 0xf7f9fc, roughness: 0.95 });
+  const coal = new THREE.MeshStandardMaterial({ color: 0x151515, roughness: 0.9, flatShading: true });
+  const stick = new THREE.MeshStandardMaterial({ color: 0x5a3b22, roughness: 1 });
+  const rng = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(8);
+
+  // Lumpy snowballs: sphere with low-frequency radial noise
+  const lumpy = (r, seed) => {
+    const g = new THREE.SphereGeometry(r, 40, 28);
+    const p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const v = new THREE.Vector3().fromBufferAttribute(p, i);
+      const k = 1 + 0.03 * Math.sin(v.x * 7 + seed) * Math.cos(v.z * 6 - seed) + 0.02 * Math.sin(v.y * 11 + seed * 2);
+      p.setXYZ(i, v.x * k, v.y * k, v.z * k);
+    }
+    g.computeVertexNormals();
+    return new THREE.Mesh(g, snow);
+  };
+  const mound = new THREE.Mesh(new THREE.SphereGeometry(1.6, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2), snow);
+  mound.scale.y = 0.18;
+  root.add(mound);
+  const balls = [[0.75, 0.75], [0.55, 1.95], [0.4, 2.8]];
+  balls.forEach(([r, y], i) => { const b = lumpy(r, i * 3.1); b.position.y = y; root.add(b); });
+
+  // Face: coal eyes + smile, carrot nose
+  const headY = 2.8, hr = 0.4;
+  const onHead = (theta, phi, r = hr) => new THREE.Vector3(Math.sin(phi) * Math.sin(theta) * r, headY + Math.cos(phi) * r, Math.sin(phi) * Math.cos(theta) * r);
+  for (const t of [-0.3, 0.3]) {
+    const e = new THREE.Mesh(new THREE.IcosahedronGeometry(0.045, 0), coal);
+    e.position.copy(onHead(t, 1.25));
+    root.add(e);
+  }
+  for (let i = 0; i < 7; i++) {
+    const t = -0.45 + (i / 6) * 0.9;
+    const m = new THREE.Mesh(new THREE.IcosahedronGeometry(0.025, 0), coal);
+    m.position.copy(onHead(t, 1.95 - Math.cos(t * 2.5) * 0.15));
+    root.add(m);
+  }
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.35, 12), new THREE.MeshStandardMaterial({ color: 0xe8741e, roughness: 0.7 }));
+  nose.rotation.x = Math.PI / 2;
+  nose.position.set(0, headY - 0.02, hr + 0.15);
+  root.add(nose);
+  // Buttons down the middle ball
+  for (let i = 0; i < 3; i++) {
+    const b = new THREE.Mesh(new THREE.IcosahedronGeometry(0.05, 0), coal);
+    const phi = 1.1 + i * 0.35;
+    b.position.set(0, 1.95 + Math.cos(phi) * 0.55, Math.sin(phi) * 0.55);
+    root.add(b);
+  }
+
+  // Stick arms with a forked twig
+  for (const s of [-1, 1]) {
+    const pts = [new THREE.Vector3(s * 0.45, 2.05, 0), new THREE.Vector3(s * 0.9, 2.3, 0.05), new THREE.Vector3(s * 1.3, 2.55 + rng() * 0.1, 0)];
+    root.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 10, 0.025, 6), stick));
+    const twig = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.015, 0.25, 5), stick);
+    twig.position.set(s * 1.15, 2.6, 0);
+    twig.rotation.z = s * -0.6;
+    root.add(twig);
+  }
+
+  // Scarf: striped torus around the neck + hanging tail
+  const stripes = [0xc0392b, 0xf4f1ea];
+  for (let i = 0; i < 12; i++) {
+    const seg = new THREE.Mesh(new THREE.TorusGeometry(0.38, 0.08, 8, 6, (Math.PI * 2) / 12), new THREE.MeshStandardMaterial({ color: stripes[i % 2], roughness: 1 }));
+    seg.rotation.set(Math.PI / 2, 0, (i / 12) * Math.PI * 2);
+    seg.position.y = 2.45;
+    root.add(seg);
+  }
+  for (let i = 0; i < 5; i++) {
+    const tail = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.1, 0.05), new THREE.MeshStandardMaterial({ color: stripes[i % 2], roughness: 1 }));
+    tail.position.set(0.22, 2.35 - i * 0.1, 0.33);
+    tail.rotation.z = 0.15;
+    root.add(tail);
+  }
+
+  // Top hat
+  const hat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.5 });
+  const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.03, 32), hat);
+  brim.position.y = headY + 0.33;
+  root.add(brim);
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.24, 0.45, 32), hat);
+  crown.position.y = headY + 0.56;
+  root.add(crown);
+  const band = new THREE.Mesh(new THREE.CylinderGeometry(0.245, 0.245, 0.07, 32), new THREE.MeshStandardMaterial({ color: 0x7a1d1d }));
+  band.position.y = headY + 0.39;
+  root.add(band);
+  root.rotation.y = 0.3;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

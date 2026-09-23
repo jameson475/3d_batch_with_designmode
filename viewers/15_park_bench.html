@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Cast-Iron Park Bench</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>15 · Cast-Iron Park Bench</b><br>A classic park bench with cast-iron scrolled side frames, wooden slat seat and curved backrest, and armrests.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 15: "A classic park bench with cast-iron scrolled side frames, wooden slat seat and curved backrest, and armrests."
+const meta = { id: '15', name: 'Cast-Iron Park Bench', prompt: 'A classic park bench with cast-iron scrolled side frames, wooden slat seat and curved backrest, and armrests.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const iron = new THREE.MeshStandardMaterial({ color: 0x1e2a24, metalness: 0.6, roughness: 0.5 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0xa0683a, roughness: 0.75 });
+  const L = 3.0;
+
+  // Side frame: a tube swept along a 2D curve (leg -> seat support -> backrest), plus a scroll armrest
+  function sideFrame(x) {
+    const g = new THREE.Group();
+    const path = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, 0.55), new THREE.Vector3(0, 0.45, 0.45), new THREE.Vector3(0, 0.8, 0.35),
+      new THREE.Vector3(0, 0.82, -0.2), new THREE.Vector3(0, 0.9, -0.4), new THREE.Vector3(0, 1.4, -0.55), new THREE.Vector3(0, 1.75, -0.62),
+    ]);
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(path, 60, 0.045, 8), iron));
+    const back = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, -0.5), new THREE.Vector3(0, 0.45, -0.42), new THREE.Vector3(0, 0.82, -0.2),
+    ]);
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(back, 30, 0.045, 8), iron));
+    // Armrest with a spiral scroll at its front end
+    const arm = [];
+    for (let i = 0; i <= 40; i++) {
+      const t = i / 40;
+      if (t < 0.6) arm.push(new THREE.Vector3(0, 1.15, -0.45 + (t / 0.6) * 0.95));
+      else {
+        const a = ((t - 0.6) / 0.4) * Math.PI * 3, r = 0.12 * (1 - (t - 0.6) / 0.5);
+        arm.push(new THREE.Vector3(0, 1.03 + Math.cos(a) * r, 0.5 + Math.sin(a) * r));
+      }
+    }
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(arm), 80, 0.035, 8), iron));
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.35, 8), iron);
+    post.position.set(0, 0.98, 0.38);
+    g.add(post);
+    g.position.x = x;
+    return g;
+  }
+  root.add(sideFrame(-L / 2 + 0.1), sideFrame(L / 2 - 0.1));
+
+  // Seat slats
+  for (let i = 0; i < 5; i++) {
+    const s = new THREE.Mesh(new THREE.BoxGeometry(L, 0.04, 0.12), wood);
+    s.position.set(0, 0.85, 0.38 - i * 0.14);
+    root.add(s);
+  }
+  // Backrest slats following the curve
+  const backPts = [[0.95, -0.42], [1.12, -0.48], [1.29, -0.53], [1.46, -0.57], [1.63, -0.6]];
+  for (const [y, z] of backPts) {
+    const s = new THREE.Mesh(new THREE.BoxGeometry(L, 0.12, 0.04), wood);
+    s.position.set(0, y, z + 0.05);
+    s.rotation.x = -0.25;
+    root.add(s);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

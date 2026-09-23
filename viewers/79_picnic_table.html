@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Picnic Table</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>79 · Picnic Table</b><br>A wooden picnic table with attached benches and a checkered tablecloth.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 79: "A wooden picnic table with attached benches and a checkered tablecloth."
+const meta = { id: '79', name: 'Picnic Table', prompt: 'A wooden picnic table with attached benches and a checkered tablecloth.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0xa87b4f, roughness: 0.85 });
+  const L = 2.6;
+  // Tabletop planks
+  for (let i = 0; i < 5; i++) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(L, 0.06, 0.17), wood);
+    p.position.set(0, 0.95, -0.36 + i * 0.18);
+    root.add(p);
+  }
+  // Bench planks on both sides
+  for (const s of [-1, 1]) for (const dz of [0, 0.18]) {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(L, 0.05, 0.16), wood);
+    b.position.set(0, 0.55, s * (0.8 + dz));
+    root.add(b);
+  }
+  // A-frame legs crossing from bench rails to the top
+  for (const x of [-1.0, 1.0]) {
+    for (const s of [-1, 1]) {
+      const a = new THREE.Vector3(x, 0.92, s * 0.25), b = new THREE.Vector3(x, 0, s * 0.95);
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.08, a.distanceTo(b), 0.12), wood);
+      leg.position.copy(a).lerp(b, 0.5);
+      leg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), a.clone().sub(b).normalize());
+      root.add(leg);
+    }
+    const rail = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.08, 2.1), wood);
+    rail.position.set(x, 0.5, 0);
+    root.add(rail);
+  }
+  // Checkered tablecloth draped slightly over the edges (vertex-colored subdivided plane)
+  const cg = new THREE.PlaneGeometry(1.8, 1.1, 36, 22);
+  cg.rotateX(-Math.PI / 2);
+  const p = cg.attributes.position, cols = [];
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), z = p.getZ(i);
+    const over = Math.max(0, Math.abs(z) - 0.45);
+    p.setY(i, -over * 1.8);
+    p.setZ(i, Math.sign(z) * Math.min(Math.abs(z), 0.45 + over * 0.3));
+    const c = new THREE.Color((Math.floor((x + 0.9) / 0.15) + Math.floor((z + 0.55) / 0.15)) % 2 ? 0xd62828 : 0xffffff);
+    cols.push(c.r, c.g, c.b);
+  }
+  cg.setAttribute('color', new THREE.Float32BufferAttribute(cols, 3));
+  cg.computeVertexNormals();
+  const cloth = new THREE.Mesh(cg, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9, side: THREE.DoubleSide }));
+  cloth.position.y = 0.985;
+  cloth.rotation.y = 0.08;
+  root.add(cloth);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

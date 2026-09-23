@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Scandinavian Wooden Chair</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>02 · Scandinavian Wooden Chair</b><br>A simple Scandinavian wooden dining chair with four tapered legs, a slatted backrest, and a light oak finish.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 02: "A simple Scandinavian wooden dining chair with four tapered legs, a slatted backrest, and a light oak finish."
+const meta = { id: '02', name: 'Scandinavian Wooden Chair', prompt: 'A simple Scandinavian wooden dining chair with four tapered legs, a slatted backrest, and a light oak finish.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const oak = new THREE.MeshStandardMaterial({ color: 0xd2a86e, roughness: 0.7 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0xb88a52, roughness: 0.75 });
+
+  const seatH = 1.0, w = 1.0, d = 0.95;
+
+  // Seat
+  const seat = new THREE.Mesh(new THREE.BoxGeometry(w, 0.08, d), oak);
+  seat.position.y = seatH;
+  root.add(seat);
+
+  // Tapered legs (cylinders with different top/bottom radius)
+  const legGeo = new THREE.CylinderGeometry(0.045, 0.03, seatH, 12);
+  const backLegGeo = new THREE.CylinderGeometry(0.045, 0.03, seatH + 1.0, 12);
+  for (const [x, z] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+    const isBack = z < 0;
+    const leg = new THREE.Mesh(isBack ? backLegGeo : legGeo, dark);
+    const h = isBack ? seatH + 1.0 : seatH;
+    leg.position.set(x * (w / 2 - 0.07), h / 2, z * (d / 2 - 0.07));
+    root.add(leg);
+  }
+
+  // Stretchers between legs
+  const stretcher = new THREE.BoxGeometry(w - 0.14, 0.04, 0.04);
+  for (const z of [-1, 1]) {
+    const s = new THREE.Mesh(stretcher, dark);
+    s.position.set(0, 0.35, z * (d / 2 - 0.07));
+    root.add(s);
+  }
+
+  // Slatted backrest
+  const top = new THREE.Mesh(new THREE.BoxGeometry(w - 0.1, 0.16, 0.05), oak);
+  top.position.set(0, seatH + 0.92, -(d / 2 - 0.07));
+  root.add(top);
+  const slatGeo = new THREE.BoxGeometry(0.07, 0.8, 0.03);
+  for (let i = -2; i <= 2; i++) {
+    const slat = new THREE.Mesh(slatGeo, oak);
+    slat.position.set(i * 0.16, seatH + 0.45, -(d / 2 - 0.07));
+    root.add(slat);
+  }
+
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

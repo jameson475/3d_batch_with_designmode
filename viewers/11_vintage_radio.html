@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Vintage Tube Radio</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>11 · Vintage Tube Radio</b><br>A 1940s tabletop tube radio with a rounded-top walnut cabinet, a fabric speaker grille, a glowing tuning dial, and two knobs.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 11: "A 1940s tabletop tube radio with a rounded-top walnut cabinet, a fabric speaker grille, a glowing tuning dial, and two knobs."
+const meta = { id: '11', name: 'Vintage Tube Radio', prompt: 'A 1940s tabletop tube radio with a rounded-top walnut cabinet, a fabric speaker grille, a glowing tuning dial, and two knobs.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const walnut = new THREE.MeshStandardMaterial({ color: 0x6b3f22, roughness: 0.45 });
+  const brass = new THREE.MeshStandardMaterial({ color: 0xc9a34f, metalness: 0.85, roughness: 0.3 });
+  const cloth = new THREE.MeshStandardMaterial({ color: 0xcdb892, roughness: 1 });
+
+  // Cabinet silhouette: box with a semicircular top, extruded with bevel
+  const W = 2.0, H = 1.2, R = W / 2;
+  const s = new THREE.Shape();
+  s.moveTo(-R, 0); s.lineTo(R, 0); s.lineTo(R, H); s.absarc(0, H, R, 0, Math.PI, false); s.lineTo(-R, 0);
+  const cab = new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth: 0.9, bevelEnabled: true, bevelSize: 0.05, bevelThickness: 0.05, bevelSegments: 4, curveSegments: 32 }), walnut);
+  cab.position.z = -0.45;
+  root.add(cab);
+
+  // Arched grille inset on the front
+  const g = new THREE.Shape();
+  const gr = 0.62;
+  g.moveTo(-gr, 0); g.lineTo(gr, 0); g.lineTo(gr, 0.5); g.absarc(0, 0.5, gr, 0, Math.PI, false); g.lineTo(-gr, 0);
+  const grille = new THREE.Mesh(new THREE.ShapeGeometry(g, 32), cloth);
+  grille.position.set(0, 0.95, 0.505);
+  root.add(grille);
+  // Vertical brass grille bars
+  for (let i = -4; i <= 4; i++) {
+    const x = i * 0.13;
+    const h = 0.5 + Math.sqrt(Math.max(0, gr * gr - x * x));
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(0.03, h, 0.02), brass);
+    bar.position.set(x, 0.95 + h / 2, 0.52);
+    root.add(bar);
+  }
+
+  // Tuning dial (glowing) below grille
+  const dial = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.26, 0.02),
+    new THREE.MeshStandardMaterial({ color: 0xffe2a0, emissive: 0xffb347, emissiveIntensity: 1.2 }));
+  dial.position.set(0, 0.55, 0.51);
+  root.add(dial);
+  const needle = new THREE.Mesh(new THREE.BoxGeometry(0.015, 0.22, 0.01), new THREE.MeshStandardMaterial({ color: 0xaa2222 }));
+  needle.position.set(0.18, 0.55, 0.525);
+  root.add(needle);
+
+  // Knobs
+  for (const x of [-0.7, 0.7]) {
+    const knob = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.13, 0.12, 24), brass);
+    knob.rotation.x = Math.PI / 2;
+    knob.position.set(x, 0.3, 0.56);
+    root.add(knob);
+  }
+
+  // Feet
+  for (const x of [-0.8, 0.8]) for (const z of [-0.3, 0.3]) {
+    const f = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.08, 12), brass);
+    f.position.set(x, -0.04, z);
+    root.add(f);
+  }
+  root.position.y = 0.08;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

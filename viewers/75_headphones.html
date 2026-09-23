@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Over-Ear Headphones</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>75 · Over-Ear Headphones</b><br>Over-ear headphones with a padded headband and cushioned ear cups.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 75: "Over-ear headphones with a padded headband and cushioned ear cups."
+const meta = { id: '75', name: 'Over-Ear Headphones', prompt: 'Over-ear headphones with a padded headband and cushioned ear cups.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const shell = new THREE.MeshStandardMaterial({ color: 0x2b2d31, metalness: 0.3, roughness: 0.4 });
+  const pad = new THREE.MeshStandardMaterial({ color: 0x151517, roughness: 0.95 });
+  const accent = new THREE.MeshStandardMaterial({ color: 0xd9a441, metalness: 1, roughness: 0.3 });
+  const R = 0.95, cy = 1.1;
+  // Headband: half torus + padded inner arc
+  const band = new THREE.Mesh(new THREE.TorusGeometry(R, 0.06, 12, 48, Math.PI), shell);
+  band.position.y = cy;
+  band.scale.z = 1.8;
+  root.add(band);
+  const cushion = new THREE.Mesh(new THREE.TorusGeometry(R - 0.08, 0.07, 12, 32, Math.PI * 0.6), pad);
+  cushion.position.y = cy;
+  cushion.rotation.z = Math.PI * 0.2;
+  cushion.scale.z = 2.2;
+  root.add(cushion);
+  for (const s of [-1, 1]) {
+    // Slider arm + yoke
+    const slider = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.4, 0.1), accent);
+    slider.position.set(s * R, cy - 0.15, 0);
+    root.add(slider);
+    const yoke = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.03, 8, 24, Math.PI), accent);
+    yoke.rotation.set(0, Math.PI / 2, Math.PI);
+    yoke.position.set(s * R, cy - 0.38, 0);
+    root.add(yoke);
+    // Ear cup: oval capsule with cushion ring on the inner face
+    const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.22, 40), shell);
+    cup.rotation.z = Math.PI / 2;
+    cup.scale.set(1, 1, 1.25);
+    cup.position.set(s * (R + 0.02), cy - 0.8, 0);
+    root.add(cup);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.1, 12, 40), pad);
+    ring.rotation.y = Math.PI / 2;
+    ring.scale.set(1, 1.25, 1);
+    ring.position.set(s * (R - 0.12), cy - 0.8, 0);
+    root.add(ring);
+    const logo = new THREE.Mesh(new THREE.CircleGeometry(0.12, 24), accent);
+    logo.rotation.y = s * Math.PI / 2;
+    logo.position.set(s * (R + 0.135), cy - 0.8, 0);
+    root.add(logo);
+  }
+  root.rotation.y = 0.5;
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

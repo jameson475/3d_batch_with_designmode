@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Twin-Bell Alarm Clock</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>56 · Twin-Bell Alarm Clock</b><br>A classic twin-bell alarm clock with a hammer between the bells and little feet.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 56: "A classic twin-bell alarm clock with a hammer between the bells and little feet."
+const meta = { id: '56', name: 'Twin-Bell Alarm Clock', prompt: 'A classic twin-bell alarm clock with a hammer between the bells and little feet.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const red = new THREE.MeshStandardMaterial({ color: 0xc8322b, metalness: 0.5, roughness: 0.3 });
+  const chrome = new THREE.MeshStandardMaterial({ color: 0xd6d8dc, metalness: 1, roughness: 0.2 });
+  const ink = new THREE.MeshBasicMaterial({ color: 0x111111 });
+  const Y = 0.95;
+  const bodyM = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 0.35, 48), red);
+  bodyM.rotation.x = Math.PI / 2;
+  bodyM.position.y = Y;
+  root.add(bodyM);
+  const face = new THREE.Mesh(new THREE.CircleGeometry(0.6, 48), new THREE.MeshStandardMaterial({ color: 0xfaf6ea }));
+  face.position.set(0, Y, 0.176);
+  root.add(face);
+  const bezel = new THREE.Mesh(new THREE.TorusGeometry(0.63, 0.04, 8, 48), chrome);
+  bezel.position.set(0, Y, 0.18);
+  root.add(bezel);
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    const t = new THREE.Mesh(new THREE.PlaneGeometry(0.03, i % 3 ? 0.06 : 0.12), ink);
+    t.position.set(Math.sin(a) * 0.5, Y + Math.cos(a) * 0.5, 0.178);
+    t.rotation.z = -a;
+    root.add(t);
+  }
+  const hand = (len, w, a) => { const h = new THREE.Mesh(new THREE.PlaneGeometry(w, len), ink); h.geometry.translate(0, len / 2, 0); h.position.set(0, Y, 0.18); h.rotation.z = -a; root.add(h); };
+  hand(0.3, 0.035, 5.2); hand(0.45, 0.02, 0.5);
+  // Bells + hammer
+  for (const s of [-1, 1]) {
+    const bell = new THREE.Mesh(new THREE.SphereGeometry(0.28, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), chrome);
+    bell.position.set(s * 0.38, Y + 0.72, -0.02);
+    bell.rotation.z = s * -0.45;
+    root.add(bell);
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, 0.22, 12), chrome);
+    leg.position.set(s * 0.45, Y - 0.78, 0);
+    leg.rotation.z = s * 0.35;
+    root.add(leg);
+    const foot = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 8), chrome);
+    foot.position.set(s * 0.5, 0.06, 0);
+    root.add(foot);
+  }
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.2, 8), chrome);
+  post.position.set(0, Y + 0.78, -0.02);
+  root.add(post);
+  const hammer = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 8), chrome);
+  hammer.position.set(0, Y + 0.9, -0.02);
+  root.add(hammer);
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 8, 24, Math.PI), chrome);
+  handle.position.set(0, Y + 0.68, -0.12);
+  root.add(handle);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

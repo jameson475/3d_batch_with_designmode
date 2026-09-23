@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Igloo</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>95 · Igloo</b><br>An igloo.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 95: "An igloo."
+const meta = { id: '95', name: 'Igloo', prompt: 'An igloo.', detail: 'simple' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const R = 1.3;
+  // Snow blocks: rings of boxes on a hemisphere, each row offset by half a block
+  const rows = 7;
+  for (let r = 0; r < rows; r++) {
+    const phi = (r / rows) * (Math.PI / 2), phi2 = ((r + 1) / rows) * (Math.PI / 2);
+    const ringR = R * Math.cos((phi + phi2) / 2), y = R * Math.sin((phi + phi2) / 2);
+    const n = Math.max(3, Math.round((2 * Math.PI * ringR) / 0.45));
+    for (let i = 0; i < n; i++) {
+      const a = ((i + (r % 2) * 0.5) / n) * Math.PI * 2;
+      if (r < 2 && Math.abs(Math.atan2(Math.sin(a), Math.cos(a))) < 0.3) continue; // leave room for the tunnel
+      const b = new THREE.Mesh(new THREE.BoxGeometry((2 * Math.PI * ringR) / n - 0.02, R * (phi2 - phi) - 0.02, 0.22), new THREE.MeshStandardMaterial({ color: 0xf4f8fc, roughness: 0.9 }));
+      b.position.set(Math.cos(a) * ringR, y, Math.sin(a) * ringR);
+      b.lookAt(0, 0, 0);
+      root.add(b);
+    }
+  }
+  const cap = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0xf4f8fc }));
+  cap.position.y = R * Math.sin(((rows - 0.5) / rows) * (Math.PI / 2)) - 0.1;
+  root.add(cap);
+  // Entrance tunnel along +x
+  const tunnel = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.9, 20, 1, true, 0, Math.PI), new THREE.MeshStandardMaterial({ color: 0xe8eef4, roughness: 0.9, side: THREE.DoubleSide }));
+  tunnel.rotation.set(0, 0, Math.PI / 2);
+  tunnel.rotation.order = 'ZYX';
+  tunnel.position.set(R + 0.1, 0, 0);
+  root.add(tunnel);
+  const door = new THREE.Mesh(new THREE.CircleGeometry(0.4, 20, 0, Math.PI), new THREE.MeshBasicMaterial({ color: 0x1a2530, side: THREE.DoubleSide }));
+  door.rotation.y = Math.PI / 2;
+  door.position.set(R + 0.54, 0, 0);
+  root.add(door);
+  const ground = new THREE.Mesh(new THREE.CircleGeometry(2.3, 40), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }));
+  ground.rotation.x = -Math.PI / 2;
+  root.add(ground);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Spiral Staircase</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>09 · Spiral Staircase</b><br>A cast-iron spiral staircase with 20 wedge-shaped treads around a central pole and a helical handrail.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 09: "A cast-iron spiral staircase with 20 wedge-shaped treads around a central pole and a helical handrail."
+const meta = { id: '09', name: 'Spiral Staircase', prompt: 'A cast-iron spiral staircase with 20 wedge-shaped treads around a central pole and a helical handrail.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const iron = new THREE.MeshStandardMaterial({ color: 0x3a3d42, metalness: 0.75, roughness: 0.45 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x8a5a36, roughness: 0.7 });
+
+  const steps = 20, rise = 0.18, turn = (Math.PI * 2 * 1.25) / steps, R = 1.1;
+  const H = steps * rise;
+
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, H + 0.6, 20), iron);
+  pole.position.y = (H + 0.6) / 2;
+  root.add(pole);
+
+  // Wedge tread: a pie-slice shape extruded
+  const wedge = new THREE.Shape();
+  wedge.moveTo(0, 0);
+  wedge.absarc(0, 0, R, -turn * 0.55, turn * 0.55, false);
+  wedge.lineTo(0, 0);
+  const treadGeo = new THREE.ExtrudeGeometry(wedge, { depth: 0.05, bevelEnabled: false });
+  treadGeo.rotateX(-Math.PI / 2);
+
+  const railPts = [];
+  const balGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.9, 6);
+  for (let i = 0; i < steps; i++) {
+    const a = i * turn, y = (i + 1) * rise;
+    const t = new THREE.Mesh(treadGeo, wood);
+    t.rotation.y = a;
+    t.position.y = y;
+    root.add(t);
+
+    // Baluster at outer edge
+    const bx = Math.cos(a) * (R - 0.05), bz = -Math.sin(a) * (R - 0.05);
+    const bal = new THREE.Mesh(balGeo, iron);
+    bal.position.set(bx, y + 0.45, bz);
+    root.add(bal);
+    railPts.push(new THREE.Vector3(bx, y + 0.9, bz));
+  }
+
+  // Helical handrail through baluster tops
+  const curve = new THREE.CatmullRomCurve3(railPts);
+  const rail = new THREE.Mesh(new THREE.TubeGeometry(curve, 160, 0.03, 8, false), iron);
+  root.add(rail);
+
+  // Floor plate
+  const plate = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.04, 24), iron);
+  plate.position.y = 0.02;
+  root.add(plate);
+
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

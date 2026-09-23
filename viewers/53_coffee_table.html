@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Mid-Century Coffee Table</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>53 · Mid-Century Coffee Table</b><br>A mid-century modern coffee table with a walnut oval top and splayed legs.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 53: "A mid-century modern coffee table with a walnut oval top and splayed legs."
+const meta = { id: '53', name: 'Mid-Century Coffee Table', prompt: 'A mid-century modern coffee table with a walnut oval top and splayed legs.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const walnut = new THREE.MeshStandardMaterial({ color: 0x6b4226, roughness: 0.4 });
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.07, 64), walnut);
+  top.scale.set(1.4, 1, 0.75);
+  top.position.y = 0.72;
+  root.add(top);
+  const edge = new THREE.Mesh(new THREE.TorusGeometry(1, 0.035, 8, 64), walnut);
+  edge.rotation.x = Math.PI / 2;
+  edge.scale.set(1.4, 0.75, 1);
+  edge.position.y = 0.72;
+  root.add(edge);
+  // Splayed tapered legs: foot pushed outward from the attach point
+  for (const [x, z] of [[-0.9, -0.4], [0.9, -0.4], [-0.9, 0.4], [0.9, 0.4]]) {
+    const a = new THREE.Vector3(x * 0.8, 0.69, z * 0.8), b = new THREE.Vector3(x * 1.05, 0, z * 1.15);
+    const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.025, a.distanceTo(b), 12), walnut);
+    leg.position.copy(a).lerp(b, 0.5);
+    leg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), a.clone().sub(b).normalize());
+    root.add(leg);
+    const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.027, 0.027, 0.04, 12), new THREE.MeshStandardMaterial({ color: 0xc9a44a, metalness: 1, roughness: 0.3 }));
+    cap.position.copy(b).setY(0.02);
+    root.add(cap);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

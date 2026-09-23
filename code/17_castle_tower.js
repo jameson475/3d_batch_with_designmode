@@ -1,0 +1,68 @@
+// Prompt 17: "A medieval stone castle tower with crenellated battlements, arrow-slit windows, a wooden door, and a flag on a pole."
+export const meta = { id: '17', name: 'Castle Tower', prompt: 'A medieval stone castle tower with crenellated battlements, arrow-slit windows, a wooden door, and a flag on a pole.' };
+
+export function build(THREE) {
+  const root = new THREE.Group();
+  const stone = new THREE.MeshStandardMaterial({ color: 0x9b958a, roughness: 0.95 });
+  const stoneDark = new THREE.MeshStandardMaterial({ color: 0x7f796f, roughness: 0.95 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x1b1a18, roughness: 1 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x6a4428, roughness: 0.85 });
+  const R = 1.0, H = 3.6;
+
+  // Main shaft with a flared plinth and stone course bands
+  const shaft = new THREE.Mesh(new THREE.CylinderGeometry(R, R * 1.08, H, 32), stone);
+  shaft.position.y = H / 2;
+  root.add(shaft);
+  const plinth = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.12, R * 1.25, 0.4, 32), stoneDark);
+  plinth.position.y = 0.2;
+  root.add(plinth);
+  for (const y of [1.3, 2.5]) {
+    const band = new THREE.Mesh(new THREE.TorusGeometry(R * 1.02, 0.04, 6, 40), stoneDark);
+    band.rotation.x = Math.PI / 2;
+    band.position.y = y;
+    root.add(band);
+  }
+
+  // Corbelled parapet + merlons (crenellations)
+  const parapet = new THREE.Mesh(new THREE.CylinderGeometry(R * 1.2, R * 1.02, 0.35, 32), stoneDark);
+  parapet.position.y = H + 0.175;
+  root.add(parapet);
+  const merlons = 12;
+  for (let i = 0; i < merlons; i++) {
+    const a = (i / merlons) * Math.PI * 2;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.42, 0.22), stone);
+    m.position.set(Math.cos(a) * R * 1.1, H + 0.35 + 0.21, Math.sin(a) * R * 1.1);
+    m.rotation.y = -a + Math.PI / 2;
+    root.add(m);
+  }
+
+  // Arrow slits on the facade, spiraling up
+  for (let i = 0; i < 5; i++) {
+    const a = Math.PI / 2 + (i - 2) * 0.55;
+    const y = 1.0 + i * 0.5;
+    const slit = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.42, 0.06), dark);
+    slit.position.set(Math.cos(a) * (R + 0.01), y, Math.sin(a) * (R + 0.01));
+    slit.rotation.y = -a + Math.PI / 2;
+    root.add(slit);
+  }
+
+  // Arched door
+  const ds = new THREE.Shape();
+  ds.moveTo(-0.28, 0); ds.lineTo(0.28, 0); ds.lineTo(0.28, 0.55); ds.absarc(0, 0.55, 0.28, 0, Math.PI, false); ds.closePath();
+  const door = new THREE.Mesh(new THREE.ExtrudeGeometry(ds, { depth: 0.06, bevelEnabled: false }), wood);
+  door.position.set(0, 0.4, R * 1.12 - 0.02);
+  root.add(door);
+
+  // Flag pole + waving flag
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 1.4, 8), wood);
+  pole.position.y = H + 0.35 + 0.7;
+  root.add(pole);
+  const fg = new THREE.PlaneGeometry(0.7, 0.42, 10, 1);
+  const p = fg.attributes.position;
+  for (let v = 0; v < p.count; v++) p.setZ(v, Math.sin((p.getX(v) + 0.35) * 6) * 0.05 * (p.getX(v) + 0.35));
+  fg.computeVertexNormals();
+  const flag = new THREE.Mesh(fg, new THREE.MeshStandardMaterial({ color: 0x2a4d8f, side: THREE.DoubleSide }));
+  flag.position.set(0.36, H + 1.55, 0);
+  root.add(flag);
+  return root;
+}

@@ -1,0 +1,101 @@
+batch,id,name,detail,prompt,prompt_tokens,code_lines,code_chars,code_tokens,meshes,triangles,materials,lights
+1,01,Articulated Desk Lamp,detailed,"An articulated desk lamp with a weighted round base, two arm segments joined by hinges, and a cone shade with a glowing bulb.",28,64,2245,772,8,1368,4,1
+1,02,Scandinavian Wooden Chair,detailed,"A simple Scandinavian wooden dining chair with four tapered legs, a slatted backrest, and a light oak finish.",25,48,1882,677,13,300,2,0
+1,03,Ceramic Coffee Mug,detailed,"A glazed ceramic coffee mug with a curved handle, a thick rim, and dark coffee inside.",20,34,1389,500,3,2608,2,0
+1,04,Potted Succulent,detailed,A small terracotta pot holding an echeveria succulent with rosette leaves arranged in a golden-angle spiral.,27,42,1810,613,37,12320,36,0
+1,05,Retro Rocket,detailed,"A 1950s retro rocket ship with a pointed nose cone, porthole window, three swept fins, and a flame exhaust.",25,61,2476,885,9,3380,4,0
+1,06,Striped Lighthouse,detailed,"A red-and-white striped lighthouse on a rocky base, with a gallery railing and a glowing lantern room.",27,66,2913,1082,35,2908,5,1
+1,07,Recursive Bonsai,detailed,"A bonsai tree in a shallow rectangular tray, with a recursively branching trunk and clustered foliage pads.",21,51,2318,805,237,5384,4,0
+1,08,Tin Toy Robot,detailed,"A boxy tin toy robot with antenna, glowing eyes, chest dial panel, jointed arms with claw hands, and wind-up key.",29,78,3156,1208,30,2780,4,0
+1,09,Spiral Staircase,detailed,A cast-iron spiral staircase with 20 wedge-shaped treads around a central pole and a helical handrail.,24,53,2023,702,43,5216,2,0
+1,10,Hot Air Balloon,detailed,"A hot air balloon with a teardrop envelope in alternating colored gores, suspension ropes, a burner, and a wicker basket.",28,61,2800,990,16,4772,16,0
+2,11,Vintage Tube Radio,detailed,"A 1940s tabletop tube radio with a rounded-top walnut cabinet, a fabric speaker grille, a glowing tuning dial, and two knobs.",32,60,2727,998,19,1917,5,0
+2,12,Dutch Windmill,detailed,"A Dutch windmill with an octagonal tapered tower, a thatched cap, four lattice sails, and a wraparound balcony.",29,72,3039,1099,63,868,5,0
+2,13,Wooden Sloop,detailed,"A small wooden sloop sailboat with a curved hull, a single mast, a triangular mainsail and jib, and a boom.",29,76,3555,1320,6,1434,4,0
+2,14,Acoustic Guitar,detailed,"An acoustic guitar with a figure-eight spruce body, a sound hole with rosette, a long fretted neck, a headstock with tuning pegs, and six strings.",37,84,3560,1265,30,1892,4,0
+2,15,Cast-Iron Park Bench,detailed,"A classic park bench with cast-iron scrolled side frames, wooden slat seat and curved backrest, and armrests.",27,57,2652,1010,18,5624,2,0
+2,16,Mushroom Cluster,detailed,"A cluster of five fly-agaric mushrooms of different sizes growing from a mossy log, red caps with white spots.",25,54,2678,1028,71,8300,5,0
+2,17,Castle Tower,detailed,"A medieval stone castle tower with crenellated battlements, arrow-slit windows, a wooden door, and a flag on a pole.",30,69,3140,1168,25,1704,5,0
+2,18,Antique Hourglass,detailed,"An antique hourglass with a turned wooden frame, three spindle posts, a glass double bulb, and sand mid-flow.",25,69,3005,1083,11,10776,3,0
+2,19,Comms Satellite,detailed,"A communications satellite with a gold-foil bus, two deployable solar panel wings, a parabolic dish antenna, and thruster nozzles.",29,76,3749,1376,55,2780,5,0
+2,20,Treasure Chest,detailed,"A pirate treasure chest with a half-cylinder lid propped open, iron bands and rivets, a padlock hasp, and gold coins spilling out.",34,76,3660,1443,194,12168,7,0
+3,21,City Bicycle,detailed,"A classic city bicycle with spoked wheels, a diamond steel frame, a leather saddle, curved handlebars, and a front basket.",27,72,3735,1395,70,5788,5,0
+3,22,Grand Piano,detailed,"A glossy black grand piano with a curved case, a propped-open lid, 52 white and 36 black keys, three legs, and pedals.",32,83,3602,1380,103,1780,4,0
+3,23,Porcelain Teapot,detailed,"A round porcelain teapot with blue bands, a curved spout, a loop handle, and a lid with a knob, on a saucer.",32,69,3258,1251,9,8536,2,0
+3,24,Rangefinder Camera,detailed,"A vintage 35mm rangefinder film camera with a leatherette body, chrome top plate, a lens barrel with focus ring, dials, and a shutter button.",33,82,3460,1293,53,2904,4,0
+3,25,Retro Desk Fan,detailed,"A retro oscillating desk fan with a round wire cage, four curved blades, a motor housing, a tilting neck, and a heavy base.",30,83,3520,1299,63,8036,3,0
+3,26,Wine Bottle & Glass,detailed,A dark green wine bottle with a cork and label beside a stemmed wine glass half-filled with red wine.,22,49,3189,1212,7,6640,7,0
+3,27,Anvil on Stump,detailed,"A blacksmith's anvil with a tapered horn, a flat face with a hardy hole, a waisted body, mounted on a tree-stump block with a hammer resting on it.",40,72,3398,1258,11,1808,6,0
+3,28,Fire Hydrant,detailed,"A red cast-iron fire hydrant with a domed bonnet, a pentagonal operating nut, two side hose outlets with chained caps, and a flanged base bolted to the sidewalk.",41,61,2898,1073,32,3304,4,0
+3,29,Open Umbrella,detailed,"An open umbrella with an eight-panel canopy in alternating colors, visible ribs, a finial tip, and a curved wooden J-handle, tilted as if held.",34,73,3677,1354,36,3520,10,0
+3,30,Five-Tier Pagoda,detailed,"A five-tiered East Asian pagoda on a stone plinth, each tier with red columns and upturned curved eaves, topped by a bronze spire with rings.",36,73,3190,1122,107,7796,5,0
+4,31,Steam Locomotive,detailed,"A toy-scale steam locomotive with a cylindrical boiler, smokestack, steam dome, cab with windows, cowcatcher, and six red driving wheels linked by coupling rods.",35,101,4419,1623,32,3440,5,0
+4,32,Desk Globe,detailed,"A desk globe tilted at 23.5 degrees on a brass meridian ring and a turned wooden stand, with procedurally generated continents.",27,62,3347,1245,9,16832,6,0
+4,33,Filled Bookshelf,detailed,"A wooden bookshelf with four shelves filled with books of varied heights, thicknesses and colors, some leaning, plus a small plant on top.",30,68,3480,1332,138,1780,126,0
+4,34,Silver Candelabra,detailed,"An ornate silver five-arm candelabra with S-curved arms, drip cups, lit white candles with flames, and a turned base.",33,64,3430,1316,29,8960,8,1
+4,35,Birdhouse,detailed,"A painted wooden birdhouse on a post, with a pitched shingled roof, a round entrance hole, a perch dowel, and a small bird sitting on the roof.",37,85,3867,1393,70,1776,7,0
+4,36,Snowman,detailed,"A three-ball snowman with a carrot nose, coal eyes and buttons, stick arms, a knitted striped scarf, and a black top hat, standing on a snowy mound.",40,94,4571,1712,41,9860,23,0
+4,37,Brass Telescope,detailed,"A brass refracting telescope on a wooden tripod with an altitude mount, a finder scope, an eyepiece, and a dew shield, pointed at the sky.",35,83,3652,1344,22,1600,4,0
+4,38,Oak Barrel,detailed,"An oak wine barrel built from individual bulging staves held by four iron hoops, with a round head and a bung hole, lying on a wooden cradle.",34,73,3644,1300,36,3936,32,0
+4,39,Wind Chime,detailed,"A hanging wind chime with a round wooden top disk, six aluminum tubes of graded lengths on strings, a central striker, and a sail.",28,56,2810,1003,10,924,2,0
+4,40,Hurricane Lantern,detailed,"A hurricane oil lantern with a red-painted fuel tank, a glass globe with a glowing flame, a wire guard, a vented cap, and a bail handle.",36,72,3747,1421,26,6448,12,1
+5,41,Office Swivel Chair,detailed,"An ergonomic office swivel chair with a five-star base on casters, a gas-lift column, a padded seat, a curved mesh backrest, and armrests.",39,85,4256,1595,29,1976,5,0
+5,42,Knight's Great Helm,detailed,"A medieval knight's great helm on a display stand: a steel bucket helmet with a riveted cross reinforcement, eye slits, breathing holes, and a red plume.",36,76,3583,1298,35,2244,6,0
+5,43,Compound Microscope,detailed,"A laboratory compound microscope with a curved arm, an angled eyepiece tube, a rotating nosepiece with three objectives, a mechanical stage with slide clips, coarse and fine focus knobs, and a base lamp.",44,99,4723,1737,25,1700,8,0
+5,44,Frosted Cupcake,detailed,"A cupcake in a pleated paper liner topped with a swirled pink frosting spiral, rainbow sprinkles, and a cherry with a stem.",30,75,3687,1326,96,19260,95,0
+5,45,Traffic Cones & Barrier,detailed,"Three orange traffic cones with white reflective bands on square black bases, one knocked over, next to a striped road barrier on A-frame legs.",31,73,3361,1185,28,872,11,0
+5,46,Staunton Chess Pieces,detailed,"A corner of a wooden chessboard with a Staunton-style king, queen, rook, bishop, and pawn in ivory and ebony, all turned on a lathe.",40,79,3841,1576,45,9684,18,0
+5,47,Garden Wheelbarrow,detailed,"A garden wheelbarrow with a deep green steel tray, a single pneumatic front wheel, tubular handles with rubber grips, rear legs, and a load of soil.",36,79,4202,1608,14,3742,5,0
+5,48,Glowing Jellyfish,detailed,"A translucent glowing jellyfish with a scalloped bell, frilly oral arms, and long trailing tentacles that wave in sine curves.",28,79,3778,1401,25,22144,3,1
+5,49,Grandfather Clock,detailed,"A tall mahogany grandfather clock with an arched hood, a clock face with Roman-numeral ticks and hands, a glass-front trunk showing a brass pendulum and weights, and a plinth base.",43,92,4552,1760,89,3208,5,0
+5,50,Ferris Wheel,detailed,"A carnival Ferris wheel with a double-rim spoked wheel, twelve colorful gondolas hanging level, an A-frame support tower, and light bulbs along the rim.",39,95,4378,1650,264,20876,16,1
+6,51,Apple,simple,A red apple.,4,27,1244,492,3,3272,3,0
+6,52,Iced Donut,simple,A donut with pink icing and sprinkles.,11,37,1753,676,72,14472,72,0
+6,53,Mid-Century Coffee Table,medium,A mid-century modern coffee table with a walnut oval top and splayed legs.,19,29,1513,563,10,1664,5,0
+6,54,Rubber Duck,simple,A rubber duck.,4,33,1407,527,7,4200,4,0
+6,55,Pencil,simple,A yellow pencil.,4,25,1301,474,5,252,5,0
+6,56,Twin-Bell Alarm Clock,medium,A classic twin-bell alarm clock with a hammer between the bells and little feet.,17,54,2662,993,26,3156,4,0
+6,57,Potted Saguaro,medium,"A saguaro cactus with two arms in a clay pot, with ribbed stems and spines.",23,50,2149,815,183,11776,4,0
+6,58,Open Laptop,medium,"An open laptop with a keyboard, trackpad, and a glowing screen.",15,47,2432,905,76,906,5,0
+6,59,Electric Guitar,detailed,"A sunburst electric guitar with an offset double-cutaway solid body, a white pickguard, three single-coil pickups, volume and tone knobs, a whammy bar, a maple neck with dot inlays, and a six-in-line headstock.",59,111,5698,2203,67,4150,13,0
+6,60,Space Shuttle Stack,detailed,"A space shuttle orbiter stacked for launch: the white orbiter with black heat-shield underside and delta wings, mounted on a large orange external fuel tank flanked by two white solid rocket boosters, standing on a launch platform.",48,104,5051,1869,25,5546,7,0
+7,61,Tree,simple,A tree.,3,20,969,356,13,1008,13,0
+7,62,Small House,simple,A small house.,4,34,1582,589,8,92,6,0
+7,63,Skeleton Key,simple,An old key.,4,39,1633,656,8,2852,1,0
+7,64,Victorian Street Lamp,medium,A Victorian cast-iron street lamp with a lantern head and a fluted post.,18,50,2541,983,11,3168,2,1
+7,65,Three-Seat Sofa,medium,"A three-seat fabric sofa with rounded arms, seat cushions, and throw pillows.",19,57,2642,1094,16,11560,4,0
+7,66,Goldfish Bowl,medium,"A round glass fishbowl with water, gravel, a plant, and a goldfish.",18,50,3070,1151,70,7982,70,0
+7,67,Viking Longship,detailed,"A Viking longship with an overlapping clinker-built plank hull, a carved dragon-head prow and curled stern, a single mast with a red-and-white striped square sail, a row of painted round shields along each gunwale, and oars.",56,113,5811,2130,70,5988,41,0
+7,68,Drum Kit,detailed,"A five-piece rock drum kit: a bass drum with a logo head and pedal, a snare on a stand, two rack toms mounted on the bass drum, a floor tom on legs, a hi-hat, and two cymbals on boom stands, all with sparkle-red wraps and chrome hoops.",68,123,5481,2118,84,7748,6,0
+7,69,Rural Mailbox,simple,A mailbox.,3,29,1370,502,4,236,3,0
+7,70,Skateboard,medium,"A skateboard with a concave deck, kicktails, trucks, and colorful wheels.",19,49,2517,942,11,824,6,0
+8,71,Gold Star,simple,A gold star.,4,19,786,301,1,116,1,0
+8,72,Cut Gemstone,simple,A blue gemstone.,5,13,733,259,1,128,1,0
+8,73,Galvanized Bucket,simple,A metal bucket.,4,26,1058,390,6,2904,1,0
+8,74,Retro Toaster,medium,A retro chrome two-slice toaster with toast popping out.,13,43,2257,830,10,1060,6,0
+8,75,Over-Ear Headphones,medium,Over-ear headphones with a padded headband and cushioned ear cups.,15,48,2188,784,12,5000,3,0
+8,76,Hydraulic Excavator,detailed,"A yellow hydraulic excavator on steel crawler tracks, with a rotating cab with windows, a counterweight, and an articulated boom, stick, and toothed bucket driven by hydraulic cylinders, digging pose.",41,121,6415,2362,70,2968,5,0
+8,77,Carousel,detailed,"A fairground carousel with a striped conical canopy with scalloped valance, a central mirrored column, twisted brass poles, eight horses at alternating heights, a round wooden platform, and bulbs around the canopy edge.",46,88,4825,1758,164,30720,53,0
+8,78,Ice Cream Cone,simple,An ice cream cone.,5,34,1571,587,3,4096,3,0
+8,79,Picnic Table,medium,A wooden picnic table with attached benches and a checkered tablecloth.,14,53,2373,856,16,1764,2,0
+8,80,Trophy Cup,medium,A gold trophy cup with two handles on a marble base.,12,39,2129,833,6,5618,3,0
+9,81,Puffy Cloud,simple,A cloud.,3,19,778,335,8,8640,1,0
+9,82,Mushroom House,medium,"A fairy-tale mushroom house with a round door, windows, and a chimney.",19,52,2746,1041,19,6040,7,0
+9,83,Vintage Biplane,detailed,"A 1930s biplane with fabric-covered upper and lower wings joined by struts and bracing wires, an open cockpit with a windscreen, a radial engine with a two-blade wooden propeller, a tail with rudder and elevators, and fixed landing gear with spoked wheels.",61,118,6180,2295,83,4498,34,0
+9,84,Ceramic Vase,simple,A vase.,4,21,1045,400,1,5248,1,0
+9,85,Watering Can,medium,A green metal watering can with a long spout and a sprinkler rose.,17,50,2702,1011,25,1468,20,0
+9,86,Stone Arch Bridge,detailed,"A medieval stone arch bridge with three semicircular arches of individual voussoir stones, cutwater piers, a paved deck, and low parapet walls, spanning a stream.",38,73,4015,1477,178,3294,172,0
+9,87,Toy Blocks,simple,Toy blocks.,4,31,1722,716,36,912,12,0
+9,88,Antique Sewing Machine,detailed,"An antique black cast-iron sewing machine with gold decals, a curved arm and head, a hand wheel, a needle bar and presser foot above a chrome bed plate, a thread spool on a pin, mounted on a wooden base.",50,91,4993,1875,24,3644,5,0
+9,89,Bronze Bell,simple,A bell.,3,22,1134,426,4,3176,2,0
+9,90,Diamond Kite,simple,A kite.,4,36,1812,688,10,76,10,0
+10,91,Garden Snail,medium,A garden snail with a spiral shell and eye stalks.,13,51,2568,982,8,5568,4,0
+10,92,Robot Vacuum,simple,A robot vacuum.,4,28,1444,542,7,644,7,0
+10,93,Rooftop Water Tower,medium,A rooftop wooden water tower on a steel stand with a conical roof and a ladder.,20,70,3276,1258,65,4148,31,0
+10,94,Manual Typewriter,detailed,"A 1920s manual typewriter in black enamel: four staggered rows of round glass-topped keys with chrome rims, a semicircular basket of typebars, a platen roller with knobs and a sheet of paper, a carriage return lever, and gold lettering.",57,85,4651,1680,200,13774,7,0
+10,95,Igloo,simple,An igloo.,4,40,2141,796,83,1288,83,0
+10,96,Camping Tent,simple,A camping tent.,4,35,1944,689,6,103,6,0
+10,97,Yellow Submarine,medium,"A yellow cartoon submarine with portholes, a periscope, and a propeller.",18,59,2728,1038,24,6704,10,0
+10,98,Oak Treehouse,detailed,"A treehouse built into a large oak: a thick trunk with branching limbs and leafy canopy clusters, a plank platform with railings resting on the branches, a small cabin with a shingled roof and a window, a rope ladder hanging to the ground, and a tire swing on another branch.",61,90,5230,2018,91,4118,42,0
+10,99,Pumpkin,simple,A pumpkin.,3,26,1121,418,2,5016,2,0
+10,100,Gramophone,detailed,"An antique gramophone: a square mahogany cabinet with a side winding crank, a turntable with a black shellac record showing grooves and a red label, a curved tonearm with a soundbox and needle, and a large flared brass horn.",55,81,4944,1850,30,6884,19,0

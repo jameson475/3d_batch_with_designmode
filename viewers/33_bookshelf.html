@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Filled Bookshelf</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>33 · Filled Bookshelf</b><br>A wooden bookshelf with four shelves filled with books of varied heights, thicknesses and colors, some leaning, plus a small plant on top.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 33: "A wooden bookshelf with four shelves filled with books of varied heights, thicknesses and colors, some leaning, plus a small plant on top."
+const meta = { id: '33', name: 'Filled Bookshelf', prompt: 'A wooden bookshelf with four shelves filled with books of varied heights, thicknesses and colors, some leaning, plus a small plant on top.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0x9a6a3e, roughness: 0.7 });
+  const rng = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(21);
+  const W = 2.0, H = 2.6, D = 0.5, t = 0.05;
+  const palette = [0x8c2f39, 0x2d4a6b, 0x3f6b4a, 0xd9a441, 0x5a3e6b, 0xc25b3a, 0x2b2b2b, 0xe8dcc0, 0x4f7c8a];
+
+  const box = (w, h, d, x, y, z, m = wood) => { const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); b.position.set(x, y, z); root.add(b); return b; };
+  box(t, H, D, -W / 2 + t / 2, H / 2, 0);
+  box(t, H, D, W / 2 - t / 2, H / 2, 0);
+  box(W, t, D, 0, H - t / 2, 0);
+  box(W, 0.08, D, 0, 0.04, 0);
+  box(W, H, 0.02, 0, H / 2, -D / 2 + 0.01, new THREE.MeshStandardMaterial({ color: 0x7a5230, roughness: 0.8 }));
+
+  const shelfYs = [0.08, 0.7, 1.32, 1.94];
+  for (const y of shelfYs.slice(1)) box(W - 2 * t, t, D, 0, y, 0);
+
+  // Fill each shelf left-to-right with books; occasionally leave a gap and lean the next book into it
+  const bookGeo = new THREE.BoxGeometry(1, 1, 1);
+  for (let s = 0; s < shelfYs.length; s++) {
+    const base = shelfYs[s] + (s === 0 ? 0 : t / 2);
+    const maxH = 0.55;
+    let x = -W / 2 + t + 0.02;
+    const end = W / 2 - t - 0.02;
+    while (x < end - 0.05) {
+      const bw = 0.04 + rng() * 0.07, bh = 0.32 + rng() * (maxH - 0.32), bd = 0.28 + rng() * 0.12;
+      if (x + bw > end) break;
+      const mat = new THREE.MeshStandardMaterial({ color: palette[Math.floor(rng() * palette.length)], roughness: 0.6 });
+      const b = new THREE.Mesh(bookGeo, mat);
+      b.scale.set(bw, bh, bd);
+      if (rng() < 0.08 && x + bw + bh * 0.4 < end) {
+        // leaning book: pivot on its bottom-left corner
+        const lean = 0.35;
+        b.rotation.z = -lean;
+        b.position.set(x + (bh / 2) * Math.sin(lean) + (bw / 2) * Math.cos(lean), base + (bh / 2) * Math.cos(lean), D / 2 - bd / 2 - 0.03);
+        x += bh * Math.sin(lean) + bw + 0.02;
+      } else {
+        b.position.set(x + bw / 2, base + bh / 2, D / 2 - bd / 2 - 0.03);
+        x += bw + 0.004;
+      }
+      root.add(b);
+      // spine band
+      if (rng() < 0.5) {
+        const band = new THREE.Mesh(new THREE.BoxGeometry(bw * 1.01, 0.02, 0.005), new THREE.MeshStandardMaterial({ color: 0xd4b15a, metalness: 0.8, roughness: 0.3 }));
+        band.position.copy(b.position).setZ(D / 2 - 0.03 + 0.001);
+        band.position.y += bh * 0.3;
+        band.rotation.z = b.rotation.z;
+        root.add(band);
+      }
+    }
+  }
+
+  // Plant on top: pot + leafy sphere cluster
+  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.1, 0.22, 20), new THREE.MeshStandardMaterial({ color: 0xe4ddd0, roughness: 0.6 }));
+  pot.position.set(0.55, H + 0.11, 0);
+  root.add(pot);
+  const leaf = new THREE.MeshStandardMaterial({ color: 0x4d8a4a, roughness: 0.7, flatShading: true });
+  for (let i = 0; i < 7; i++) {
+    const l = new THREE.Mesh(new THREE.IcosahedronGeometry(0.1 + rng() * 0.06, 0), leaf);
+    l.position.set(0.55 + (rng() - 0.5) * 0.25, H + 0.32 + rng() * 0.15, (rng() - 0.5) * 0.25);
+    root.add(l);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

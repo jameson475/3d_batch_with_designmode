@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Porcelain Teapot</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>23 · Porcelain Teapot</b><br>A round porcelain teapot with blue bands, a curved spout, a loop handle, and a lid with a knob, on a saucer.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 23: "A round porcelain teapot with blue bands, a curved spout, a loop handle, and a lid with a knob, on a saucer."
+const meta = { id: '23', name: 'Porcelain Teapot', prompt: 'A round porcelain teapot with blue bands, a curved spout, a loop handle, and a lid with a knob, on a saucer.' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const porcelain = new THREE.MeshPhysicalMaterial({ color: 0xf7f5f0, roughness: 0.2, clearcoat: 0.9 });
+  const blue = new THREE.MeshPhysicalMaterial({ color: 0x1f4e9c, roughness: 0.25, clearcoat: 0.9 });
+
+  // Body: lathe of a squashed sphere with a foot ring and a neck
+  const prof = [new THREE.Vector2(0.001, 0.1), new THREE.Vector2(0.45, 0.1), new THREE.Vector2(0.48, 0.14)];
+  for (let i = 1; i < 20; i++) {
+    const a = -Math.PI / 2 + (i / 20) * Math.PI;
+    prof.push(new THREE.Vector2(Math.cos(a) * 0.85, 0.72 + Math.sin(a) * 0.58));
+  }
+  prof.push(new THREE.Vector2(0.4, 1.3), new THREE.Vector2(0.42, 1.34), new THREE.Vector2(0.001, 1.34));
+  root.add(new THREE.Mesh(new THREE.LatheGeometry(prof, 48), porcelain));
+
+  // Decorative bands
+  for (const [y, r] of [[0.42, 0.78], [1.02, 0.78]]) {
+    const b = new THREE.Mesh(new THREE.TorusGeometry(r, 0.025, 8, 64), blue);
+    b.rotation.x = Math.PI / 2;
+    b.position.y = y;
+    root.add(b);
+  }
+
+  // Lid dome + knob
+  const lid = new THREE.Mesh(new THREE.SphereGeometry(0.42, 32, 12, 0, Math.PI * 2, 0, Math.PI / 2), porcelain);
+  lid.scale.y = 0.45;
+  lid.position.y = 1.34;
+  root.add(lid);
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 12), blue);
+  knob.position.y = 1.58;
+  root.add(knob);
+
+  // Spout: tapered tube along a curve
+  const spoutCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0.7, 0.55, 0), new THREE.Vector3(1.0, 0.7, 0), new THREE.Vector3(1.15, 1.0, 0), new THREE.Vector3(1.3, 1.22, 0),
+  ]);
+  const spout = new THREE.TubeGeometry(spoutCurve, 30, 0.1, 16, false);
+  const p = spout.attributes.position;
+  // taper: shrink ring radius toward the tip by pulling vertices toward curve points
+  for (let i = 0; i <= 30; i++) {
+    const c = spoutCurve.getPointAt(i / 30), k = 1 - 0.55 * (i / 30);
+    for (let j = 0; j <= 16; j++) {
+      const idx = i * 17 + j;
+      p.setXYZ(idx, c.x + (p.getX(idx) - c.x) * k, c.y + (p.getY(idx) - c.y) * k, c.z + (p.getZ(idx) - c.z) * k);
+    }
+  }
+  spout.computeVertexNormals();
+  root.add(new THREE.Mesh(spout, porcelain));
+
+  // Handle: C-shaped tube
+  const handle = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-0.72, 1.05, 0), new THREE.Vector3(-1.05, 1.05, 0), new THREE.Vector3(-1.12, 0.75, 0), new THREE.Vector3(-0.95, 0.45, 0), new THREE.Vector3(-0.74, 0.4, 0),
+  ]);
+  root.add(new THREE.Mesh(new THREE.TubeGeometry(handle, 30, 0.055, 10, false), porcelain));
+
+  // Saucer
+  const sp = [[0.001, 0], [0.5, 0], [0.55, 0.02], [1.1, 0.08], [1.2, 0.12], [1.15, 0.13], [0.001, 0.05]].map(([x, y]) => new THREE.Vector2(x, y));
+  const saucer = new THREE.Mesh(new THREE.LatheGeometry(sp, 64), porcelain);
+  saucer.position.y = 0.02;
+  root.add(saucer);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.18, 0.015, 6, 64), blue);
+  rim.rotation.x = Math.PI / 2;
+  rim.position.y = 0.14;
+  root.add(rim);
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>

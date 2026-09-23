@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Potted Saguaro</title>
+<style>html,body{margin:0;height:100%;background:#efece6;font-family:system-ui,sans-serif}
+#cap{position:fixed;left:16px;bottom:16px;max-width:520px;color:#333;font-size:14px}</style></head>
+<body><div id="cap"><b>57 · Potted Saguaro</b><br>A saguaro cactus with two arms in a clay pot, with ribbed stems and spines.</div>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+// Prompt 57: "A saguaro cactus with two arms in a clay pot, with ribbed stems and spines."
+const meta = { id: '57', name: 'Potted Saguaro', prompt: 'A saguaro cactus with two arms in a clay pot, with ribbed stems and spines.', detail: 'medium' };
+
+function build(THREE) {
+  const root = new THREE.Group();
+  const green = new THREE.MeshStandardMaterial({ color: 0x4f8a4a, roughness: 0.7 });
+  const spineMat = new THREE.MeshBasicMaterial({ color: 0xf2ead0 });
+  const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.42, 0.7, 32), new THREE.MeshStandardMaterial({ color: 0xc46a42, roughness: 0.9 }));
+  pot.position.y = 0.35;
+  root.add(pot);
+  const soil = new THREE.Mesh(new THREE.CircleGeometry(0.52, 32), new THREE.MeshStandardMaterial({ color: 0xcdb58a, roughness: 1 }));
+  soil.rotation.x = -Math.PI / 2;
+  soil.position.y = 0.68;
+  root.add(soil);
+
+  // Ribbed stem: capsule with radius modulated by cos(8a), plus spines on rib crests
+  const ribbed = (r, h) => {
+    const g = new THREE.CapsuleGeometry(r, h, 8, 32);
+    const p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) {
+      const a = Math.atan2(p.getZ(i), p.getX(i)), k = 1 + 0.08 * Math.cos(a * 8);
+      p.setX(i, p.getX(i) * k); p.setZ(i, p.getZ(i) * k);
+    }
+    g.computeVertexNormals();
+    const m = new THREE.Group();
+    m.add(new THREE.Mesh(g, green));
+    for (let j = 0; j < 8; j++) for (let y = -h / 2; y <= h / 2; y += 0.18) {
+      const a = (j / 8) * Math.PI * 2;
+      const s = new THREE.Mesh(new THREE.ConeGeometry(0.008, 0.07, 3), spineMat);
+      s.position.set(Math.cos(a) * r * 1.1, y, Math.sin(a) * r * 1.1);
+      s.rotation.z = -Math.PI / 2; s.rotation.y = -a;
+      m.add(s);
+    }
+    return m;
+  };
+  const trunk = ribbed(0.22, 1.8);
+  trunk.position.y = 0.68 + 1.1;
+  root.add(trunk);
+  for (const [s, y, h] of [[1, 1.4, 0.7], [-1, 1.8, 0.5]]) {
+    const elbow = ribbed(0.13, 0.35);
+    elbow.rotation.z = s * -Math.PI / 2;
+    elbow.position.set(s * 0.35, y, 0);
+    root.add(elbow);
+    const arm = ribbed(0.14, h);
+    arm.position.set(s * 0.55, y + h / 2 + 0.05, 0);
+    root.add(arm);
+  }
+  return root;
+}
+
+const r = new THREE.WebGLRenderer({ antialias: true });
+r.setPixelRatio(devicePixelRatio); r.setSize(innerWidth, innerHeight);
+r.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0xefece6);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.6;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7f70, 1.4));
+const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(4, 7, 5); scene.add(sun);
+const obj = build(THREE); scene.add(obj);
+const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), rad = box.getSize(new THREE.Vector3()).length() / 2;
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.01, 100);
+cam.position.copy(c).add(new THREE.Vector3(1, 0.55, 1.25).normalize().multiplyScalar(rad * 3.4));
+const ctl = new OrbitControls(cam, r.domElement); ctl.target.copy(c); ctl.autoRotate = true; ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); r.setSize(innerWidth, innerHeight); });
+r.setAnimationLoop(() => { ctl.update(); r.render(scene, cam); });
+</script></body></html>
