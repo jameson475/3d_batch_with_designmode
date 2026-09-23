@@ -1,11 +1,11 @@
-## 累计观察
+## Cumulative observations
 
-- 全部只用 three.js 内置几何体（Box/Cylinder/Lathe/Extrude/Tube/Torus/Shape/Icosahedron/Capsule，外加手写 BufferGeometry：#13 船体、#29 伞面、#47 车斗、#67 船板、#90 风筝），零外部模型资源。
-- prompt 详细程度决定成本：简单（2–5 词，如 "A pumpkin."）平均约 500 代码 tok、约 960 实测 tok；中等（一句话）约 950 / 1,700；详细（列出部件）约 1,970 / 3,280。详细 prompt 的成本约是简单的 3.4 倍，mesh 数约 6 倍。
-- 简单 prompt 并不等于低质量：模型会自己补出“最典型”的形态（#54 小黄鸭、#63 骨架钥匙、#99 南瓜棱），但细节和部件数明显少。需要特定结构时，详细 prompt 更可控。
-- 最省 token 的写法：一条 Lathe 轮廓（杯子、火箭、沙漏、茶壶、酒瓶、棋子、花瓶、钟、南瓜）；一个参数化函数复用多次（蘑菇、锥桶、鼓、仙人掌、沙发 rbox）；循环/递归（楼梯、盆景、书架、摩天轮、雪屋）。
-- 代码量与视觉复杂度不成正比：#71 星星 1 个 mesh，#77 旋转木马 164 个 mesh / 3 万三角面；零件需要逐个摆放的物体（机器人、火车、打字机、挖掘机）最贵。
-- 常用“补丁技巧”：TubeGeometry 不支持变半径，#23 壶嘴、#44 奶油、#48 口腕、#91 蜗牛壳都用逐环缩放顶点实现；#32 地球、#59 吉他日落色、#78 蛋筒网格、#80 大理石用 vertexColors 代替贴图。
-- 用到真实物理/乐理的地方：#14、#59 品丝按十二平均律排布，#39 风铃管长 ∝ 1/√频率，#19 天线是真抛物面 y=r²/4f，#72 宝石 ior=2.4（钻石折射率）。
-- 质量问题记录：#20 箱盖浮空、#22 琴盖转反、#43 镜臂脱节、#91 蜗牛壳悬空——100 个里 4 个靠渲染目检发现并修复，渲染检查不能省。
-- 可优化：多数物体每个 mesh 新建几何体/材质（#86 石桥 172 个材质、#33 书架 126 个），可复用或改用 InstancedMesh。
+- Everything uses only three.js built-in geometries (Box/Cylinder/Lathe/Extrude/Tube/Torus/Shape/Icosahedron/Capsule, plus hand-written BufferGeometry: #13 hull, #29 umbrella canopy, #47 wheelbarrow tray, #67 strakes, #90 kite), with zero external model assets.
+- Prompt detail drives cost: simple (2–5 words, e.g. "A pumpkin.") averages ~500 code tok and ~960 measured tok; medium (one sentence) ~950 / 1,700; detailed (lists parts) ~1,970 / 3,280. Detailed prompts cost about 3.4× simple ones, with about 6× the meshes.
+- Simple prompts don't mean low quality: the model fills in the "most typical" form on its own (#54 rubber duck, #63 skeleton key, #99 pumpkin ribs), but detail and part count are clearly lower. When a specific structure is needed, detailed prompts give more control.
+- The most token-efficient patterns: a single Lathe profile (mug, rocket, hourglass, teapot, wine bottle, chess pieces, vase, bell, pumpkin); one parameterized function reused many times (mushrooms, cones, drums, cactus, sofa rbox); loops/recursion (staircase, bonsai, bookshelf, Ferris wheel, igloo).
+- Code size doesn't scale with visual complexity: #71 star is 1 mesh, #77 carousel is 164 meshes / 30k triangles; objects whose parts must be placed one by one (robot, train, typewriter, excavator) are the most expensive.
+- Common workarounds: TubeGeometry doesn't support variable radius, so #23 spout, #44 frosting, #48 oral arms, and #91 snail shell all scale vertices ring by ring; #32 globe, #59 guitar sunburst, #78 cone grid, and #80 marble use vertexColors instead of textures.
+- Where real physics/music theory shows up: #14 and #59 frets follow 12-tone equal temperament, #39 wind-chime tube length ∝ 1/√frequency, #19 dish is a true paraboloid y=r²/4f, #72 gem ior=2.4 (diamond's refractive index).
+- Quality issues logged: #20 floating chest lid, #22 piano lid rotated the wrong way, #43 detached microscope arm, #91 floating snail shell — 4 of 100 caught by visual render checks and fixed, so the render check is not optional.
+- Room to optimize: most objects create a new geometry/material per mesh (#86 stone bridge has 172 materials, #33 bookshelf 126); these could be shared or switched to InstancedMesh.

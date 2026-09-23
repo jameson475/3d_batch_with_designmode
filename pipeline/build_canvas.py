@@ -87,7 +87,7 @@ def card(x):
 <span>{s['triangles']:,} tris</span><span>{s['materials']} mat</span>
 </div></div></div>'''
 
-fmt = lambda v: f'{v:,}' if isinstance(v, int) else '见 README'
+fmt = lambda v: f'{v:,}' if isinstance(v, int) else 'see README'
 boards, order = {}, []
 W, BH = 1440, 2080
 MH = 1300 + ((len(r) + 9) // 10) * 132 + 30 * max(0, len(ledger['batches']) - 2)
@@ -99,24 +99,24 @@ rows = []
 for b in ledger['batches']:
     xs = [x for x in r if batch_of(x) == b['batch']]
     ct = sum(x['codeTokens'] for x in xs)
-    rows.append([f"第 {b['batch']} 批", b['ids'], str(sum(x['lines'] for x in xs)), f'{ct:,}', f"{b['generation']:,}", f"{b['generation'] // len(xs):,}", f"{b['generation'] / ct:.2f}×"])
-rows.append(['<b>合计</b>', str(len(r)), str(sum(x['lines'] for x in r)), f'<b>{tot_code:,}</b>', f'<b>{tot_gen:,}</b>', f'{tot_gen // len(r):,}', f'{tot_gen / tot_code:.2f}×'])
+    rows.append([f"Batch {b['batch']}", b['ids'], str(sum(x['lines'] for x in xs)), f'{ct:,}', f"{b['generation']:,}", f"{b['generation'] // len(xs):,}", f"{b['generation'] / ct:.2f}×"])
+rows.append(['<b>Total</b>', str(len(r)), str(sum(x['lines'] for x in r)), f'<b>{tot_code:,}</b>', f'<b>{tot_gen:,}</b>', f'{tot_gen // len(r):,}', f'{tot_gen / tot_code:.2f}×'])
 drows, _ = detail_table(r, ledger)
 detail_html = ''
 if drows:
-    detail_html = f'<h2 style="margin: 16px 0 0; {SERIF}; font-size: 28px; font-weight: 500">按 prompt 详细程度（51 号起）</h2>' + table(['详细程度', '数量', '平均 prompt tok', '平均代码 tok', '平均 mesh', '估算实测 tok/物体'], [[d['label'], str(d['n']), str(d['prompt']), f"{d['code']:,}", str(d['meshes']), f"<b>{d['est']:,}</b>"] for d in drows], right_cols=(1, 2, 3, 4, 5)) + '<p style="margin: 0; font-size: 13px; line-height: 1.55; color: #4a463f">估算实测 = 每组 5 个物体的实测消耗按代码 tok 比例分摊。</p>'
+    detail_html = f'<h2 style="margin: 16px 0 0; {SERIF}; font-size: 28px; font-weight: 500">By prompt detail level (from #51)</h2>' + table(['Detail level', 'Count', 'Avg prompt tok', 'Avg code tok', 'Avg mesh', 'Est. measured tok/object'], [[d['label'], str(d['n']), str(d['prompt']), f"{d['code']:,}", str(d['meshes']), f"<b>{d['est']:,}</b>"] for d in drows], right_cols=(1, 2, 3, 4, 5)) + '<p style="margin: 0; font-size: 13px; line-height: 1.55; color: #4a463f">Estimated measured = the measured usage of each group of 5 objects, split in proportion to code tok.</p>'
 thumbs = ''.join(f'<img src="/_blob/{blobs[x["id"]]}" alt="{e(x["name"])}" style="width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; border: 1px solid #d9d3c7; display: block">' for x in r)
 obs_html = ''.join(f'<li style="margin-bottom: 8px">{e(o)}</li>' for o in obs)
 body = header('OVERVIEW · PROMPT → THREE.JS CODE', '3D Object Prompt Set',
-              '每条自然语言 prompt 生成一个纯程序化的 three.js 模块，离线渲染、统计几何复杂度并记录 token 成本。每批一张画板，本页为累计总览。',
+              'Each natural-language prompt generates a purely procedural three.js module, rendered offline, with geometric complexity measured and token cost logged. One board per batch; this page is the cumulative overview.',
               [stat(len(r), 'objects'), stat(len(ledger['batches']), 'batches'), stat(f'{tot_code:,}', 'code tokens'), stat(f'{tot_gen:,}', 'tokens spent generating', True)])
 body += f'<div style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 12px">{thumbs}</div>'
 body += f'''<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; align-items: start">
-<div style="display: flex; flex-direction: column; gap: 14px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">各批次成本</h2>
-{table(['批次', '物体', '代码行', '代码 tok', '生成实测 tok', '每物体', '实测/代码'], rows, right_cols=(2, 3, 4, 5, 6))}
-<p style="margin: 0; font-size: 13px; line-height: 1.55; color: #4a463f">代码 tok：Claude 分词器对最终代码计数。生成实测：每步前后会话剩余 token 之差（含思考与工具包装）。</p>
+<div style="display: flex; flex-direction: column; gap: 14px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">Cost by batch</h2>
+{table(['Batch', 'Objects', 'Code lines', 'Code tok', 'Measured gen tok', 'Per object', 'Measured/code'], rows, right_cols=(2, 3, 4, 5, 6))}
+<p style="margin: 0; font-size: 13px; line-height: 1.55; color: #4a463f">Code tok: final code counted with the Claude tokenizer. Measured gen: the difference in the session's remaining tokens before and after each step (includes thinking and tool wrapping).</p>
 {detail_html}</div>
-<div style="display: flex; flex-direction: column; gap: 14px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">累计观察</h2>
+<div style="display: flex; flex-direction: column; gap: 14px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">Cumulative observations</h2>
 <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.55; color: #2b2925">{obs_html}</ul></div>
 </div>'''
 open(f'{proj}/Main.dc.html', 'w').write(page('3D Object Prompt Set — Overview', W, MH, body))
@@ -129,11 +129,11 @@ for i, b in enumerate(ledger['batches']):
     ct = sum(x['codeTokens'] for x in xs)
     name = f"Batch-{b['batch']:02d}.dc.html"
     body = header(f"BATCH {b['batch']:02d} · OBJECTS {b['ids']}", f"Batch {b['batch']}",
-                  f"{len(xs)} 个物体，生成于 {b['date']}。卡片含 prompt、代码总结与复杂度，底部为本批会话 token 账本。",
+                  f"{len(xs)} objects, generated on {b['date']}. Cards show the prompt, a code summary, and complexity; the batch's session token ledger is at the bottom.",
                   [stat(len(xs), 'objects'), stat(sum(x['lines'] for x in xs), 'lines of code'), stat(f'{ct:,}', 'code tokens'), stat(f"{b['generation']:,}", 'tokens spent generating', True)])
     body += f'<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px">{"".join(card(x) for x in xs)}</div>'
-    body += f'''<div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">Token 账本（会话实测）</h2>
-{table(['阶段', 'tokens'], [[e(s), fmt(v)] for s, v in b['steps']], right_cols=(1,))}</div>'''
+    body += f'''<div style="display: flex; flex-direction: column; gap: 14px; max-width: 760px"><h2 style="margin: 0; {SERIF}; font-size: 28px; font-weight: 500">Token ledger (measured in session)</h2>
+{table(['Stage', 'tokens'], [[e(s), fmt(v)] for s, v in b['steps']], right_cols=(1,))}</div>'''
     open(f'{proj}/{name}', 'w').write(page(f"3D Objects — Batch {b['batch']}", W, BH, body))
     boards[name] = {'x': (W + 80) * (i % 5 + 1), 'y': (i // 5) * (BH + 200), 'w': W, 'h': BH, 'title': f"Batch {b['batch']} — objects {b['ids']}"}
     order.append(name)

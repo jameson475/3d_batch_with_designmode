@@ -1,5 +1,5 @@
 """Shared helper: prompt-detail level per object and allocation of measured group tokens to objects (∝ code tokens)."""
-LABEL = {'simple': '简单', 'medium': '中等', 'detailed': '详细'}
+LABEL = {'simple': 'Simple', 'medium': 'Medium', 'detailed': 'Detailed'}
 
 def detail_of(x):
     return x.get('detail') or 'detailed'   # objects 01-50 predate the tag; all used detailed prompts
